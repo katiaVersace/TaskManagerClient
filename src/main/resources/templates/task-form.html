@@ -1,0 +1,113 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+
+</head>
+
+<body>
+
+	<div id="container" style="margin-top: 50px;"
+		class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
+		<h3>Update Task</h3>
+
+		<form action=# th:action="@{/saveTask}" th:object="${task}"
+			method="POST">
+
+			<!-- need to associate this data with task id -->
+			<input type="hidden" th:field="*{id}" /> <input type="hidden"
+				th:field="*{version}" />
+
+			<input type="hidden" th:field="*{employeeId}" />
+			
+			
+			
+
+			<table>
+				<tbody>
+
+					<tr>
+						<td><label>Employee username:</label></td>
+						<td><input type="text" th:attr="value = ${taskOwnerUserName}"
+							th:readonly="readonly" class="form-control" th:required="required" /></td>
+					</tr>
+					
+					
+
+					<tr>
+						<td><label>Description:</label></td>
+						<td><input type="text" th:field="*{description}"
+							th:readonly="not ${admin}" class="form-control" th:required="required"/></td>
+					</tr>
+
+					<tr>
+						<td><label>Expected Start Time:</label></td>
+						<td><input type="date" th:field="*{expectedStartTime} "
+							th:readonly="not ${admin} " class="form-control" th:required="required"
+						
+							 /></td>
+					</tr>
+
+
+
+					<tr>
+						<td><label>Real Start Time:</label></td>
+						<td><input type="date" th:field="*{realStartTime}"
+							class="form-control" th:required="required" /></td>
+					</tr>
+
+					<tr>
+						<td><label>Expected End Time:</label></td>
+						<td><input type="date" th:field="*{expectedEndTime} "
+							th:readonly="not ${admin} " class="form-control" th:required="required" /></td>
+					</tr>
+
+
+					<tr>
+						<td><label>Real End Time:</label></td>
+						<td><input type="date" th:field="*{realEndTime}"
+							class="form-control" th:required="required" /></td>
+					</tr>
+
+					<tr>
+						<td><label></label></td>
+						<td><input type="submit" value="Save" class="btn btn-dark" />
+
+						</td>
+					</tr>
+
+
+				</tbody>
+			</table>
+
+
+		</form>
+
+		<div style=""></div>
+
+		<p>
+
+			<a th:href="@{'/employees/'}">Back to Home Page</a>
+		</p>
+	</div>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+

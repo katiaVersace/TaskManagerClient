@@ -9,15 +9,15 @@ import com.alten.springboot.taskmanager_client.model.EmployeeDto;
 
 
 
+
 @Path("/auth")
 public interface ILoginController {
-	
 	
 	@POST
 	@Path("/login")
 	public EmployeeDto login( @FormParam("username") String username, @FormParam("password")  String password);
 
-
+	
 	@GET
 	@Path("/logout")
 	public String logout() ;

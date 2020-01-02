@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+
+<title>Teams Directory</title>
+</head>
+
+<body>
+
+	<div class="container">
+		<h2>Home Page</h2>
+		<hr>
+		<!-- display user name and role -->
+		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
+
+		<br> Role(s):
+		<tr th:each="role : ${user.roles}">
+			<p th:text="${role.name}" />
+		</tr>
+		<br>
+
+		<div
+			th:text=" 'First name: ' + ${user.firstName} +', LastName: '+ ${user.lastName} +', Email: '+ ${user.email}" />
+
+		<hr>
+
+		<div th:if="${admin}">
+			<a th:href="@{'/addTeamForm/'}">Add Team</a>
+		</div>
+
+		<hr>
+
+		<table class="table table-bordered table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th>Team Name</th>
+					<th>Number of Participants</th>
+					<div th:if="${admin}">
+					<th>Action</th>
+					</div>
+
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="tempTeam : ${teams}">
+
+					<td><a th:href="@{'/teams/'+${tempTeam.id}}"><div
+								th:text="${tempTeam.name}" /> </a></td>
+					<td th:text="0" />
+					
+					<div th:if="${admin}">
+						<td><a th:href="@{'/updateTeamForm/'+${tempTeam.id}}">Update</a>
+							| <a th:href="@{'/deleteTeam/'+${tempTeam.id}}" onclick="return confirm('Are you sure?')">Delete</a></td>
+					</div>
+
+
+				</tr>
+			</tbody>
+		</table>
+
+		<a th:href="@{'/logout/'}">logout</a>
+
+	</div>
+
+</body>
+</html>
+
+
+

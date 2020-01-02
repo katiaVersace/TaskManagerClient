@@ -49,10 +49,10 @@
 
 					<td th:text="${tempTask.description}" />
 					<td th:text="${tempTask.employeeId}" />
-					<td th:text="${#dates.format(tempTask.expectedStartTime, 'YYYY-MM-dd')}" />
-					<td th:text="${#dates.format(tempTask.realStartTime, 'YYYY-MM-dd')}" />   
-					<td th:text="${#dates.format(tempTask.expectedEndTime, 'YYYY-MM-dd')}" />   
-					<td th:text="${#dates.format(tempTask.realEndTime, 'YYYY-MM-dd')}" />  
+					<td th:text="${tempTask.expectedStartTime}" />
+					<td th:text="${tempTask.realStartTime}" />   
+					<td th:text="${tempTask.expectedEndTime}" />   
+					<td th:text="${tempTask.realEndTime}" />  
 
 					<div th:if="${user.id}==${tasksOwner} and not ${admin} ">
 						<td><a th:href="@{'/updateTaskForm/'+${tempTask.id}}">Update</a></td>

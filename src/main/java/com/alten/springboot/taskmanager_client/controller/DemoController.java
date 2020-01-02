@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.alten.springboot.taskmanager_client.model.EmployeeDto;
 import com.alten.springboot.taskmanager_client.model.TaskDto;
+import com.alten.springboot.taskmanager_client.model.TeamDto;
 import com.alten.springboot.taskmanager_client.service.IEmployeeRestController;
 import com.alten.springboot.taskmanager_client.service.ILoginController;
 import com.alten.springboot.taskmanager_client.service.ITaskRestController;
+import com.alten.springboot.taskmanager_client.service.ITeamController;
 
 @Controller
 public class DemoController {
@@ -29,6 +31,9 @@ public class DemoController {
 
 	@Autowired
 	private ILoginController loginClient;
+	
+	@Autowired
+	private ITeamController teamClient;
 
 	private static CurrentSessionInfo session;
 
@@ -83,6 +88,21 @@ public class DemoController {
 		theModel.addAttribute("admin", session.isAdmin());
 		return "list-tasks";
 	}
+	
+	@GetMapping("/teams/{teamId}")
+	public String getEmployeesByTeam(@PathVariable("teamId") int teamId, Model theModel) {
+		if (session == null) {
+			return "fancy-login";
+		}
+		
+		TeamDto theTeam = teamClient.getTeam(teamId);
+
+		theModel.addAttribute("user", session.getUser());
+		theModel.addAttribute("team", theTeam);
+		theModel.addAttribute("employees", theTeam.getEmployees());
+		theModel.addAttribute("admin", session.isAdmin());
+		return "list-employees_by_team";
+	}
 
 	@GetMapping("/showLoginForm")
 	public String showLoginForm(Model theModel) {
@@ -103,10 +123,13 @@ public class DemoController {
 			taskConduit.getCookies().putAll(loginConduit.getCookies());
 			HTTPConduit employeeConduit = WebClient.getConfig(employeeClient).getHttpConduit();
 			employeeConduit.getCookies().putAll(loginConduit.getCookies());
+			HTTPConduit teamConduit = WebClient.getConfig(teamClient).getHttpConduit();
+			teamConduit.getCookies().putAll(loginConduit.getCookies());
 
 			theModel.addAttribute("user", session.getUser());
-			theModel.addAttribute("employees", employeeClient.getEmployees());
-			return "list-employees";
+			theModel.addAttribute("teams", teamClient.getTeams());
+			theModel.addAttribute("admin", session.isAdmin());
+			return "list-teams";
 		} else {
 			theModel.addAttribute("error",true);
 			return "fancy-login";
@@ -141,6 +164,20 @@ public class DemoController {
 		theModel.addAttribute("admin", session.isAdmin());
 
 		return "task-form";
+	}
+	
+	@GetMapping("/addTeamForm")
+	public String addTeamForm(Model theModel) {
+		if (session == null) {
+			return "fancy-login";
+		}
+		TeamDto team = new TeamDto();
+		
+		theModel.addAttribute("team", team);
+		theModel.addAttribute("user", session.getUser());
+		theModel.addAttribute("admin", session.isAdmin());
+
+		return "team-form";
 	}
 
 	@GetMapping("/deleteTask/{taskId}")

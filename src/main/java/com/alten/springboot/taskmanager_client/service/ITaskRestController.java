@@ -33,11 +33,13 @@ public interface ITaskRestController {
 	public TaskDto getTask(
 			@PathParam("taskId") String taskId) ;
 	
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.APPLICATION_JSON)
 	public TaskDto addTask(
 			TaskDto theTask);
+	
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON) 
@@ -45,22 +47,29 @@ public interface ITaskRestController {
 	public TaskDto updateTaskAdmin(
 			 @RequestBody TaskDto theTask);
 	
+	
 	@PATCH
 	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.APPLICATION_JSON)
 	public TaskDto updateTask(
 			 @RequestBody TaskDto theTask);
 	
+	
 	@DELETE
 	@Path("/{taskId}") 
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteTask(
-			@PathParam("taskId") String taskId);
+			 @PathParam("taskId") String taskId);
+	
 	
 	@GET
 	@Path("/tasksByEmployee/{employeeId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<TaskDto> getTasksByEmployeeId(
-		 @PathParam("employeeId") String employeeId) ;
+			@PathParam("employeeId") String employeeId) ;
+
+	
+	
+
 
 }

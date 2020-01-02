@@ -1,52 +1,25 @@
 package com.alten.springboot.taskmanager_client.model;
 
-
-
 import java.io.Serializable;
-import java.time.LocalDate;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
+public class TaskDto implements Serializable {
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-
-
-public class TaskDto implements Serializable{
-	
 	private int id;
 
 	private String description;
 
 	private int employeeId;
-	
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone="CET")
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate expectedStartTime;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone="CET")
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate realStartTime;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone="CET")
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate expectedEndTime;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone="CET")
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-		private LocalDate realEndTime;
-	
+
+	private String expectedStartTime;
+
+	private String realStartTime;
+
+	private String expectedEndTime;
+
+	private String realEndTime;
+
 	private int version;
 
-	
 	public int getId() {
 		return id;
 	}
@@ -63,7 +36,6 @@ public class TaskDto implements Serializable{
 		this.description = description;
 	}
 
-	
 	public int getEmployeeId() {
 		return employeeId;
 	}
@@ -72,36 +44,35 @@ public class TaskDto implements Serializable{
 		this.employeeId = employeeId;
 	}
 
-	
-	public LocalDate getExpectedStartTime() {
+	public String getExpectedStartTime() {
 		return expectedStartTime;
 	}
 
-	public void setExpectedStartTime(LocalDate expectedStartTime) {
+	public void setExpectedStartTime(String expectedStartTime) {
 		this.expectedStartTime = expectedStartTime;
 	}
 
-	public LocalDate getRealStartTime() {
+	public String getRealStartTime() {
 		return realStartTime;
 	}
 
-	public void setRealStartTime(LocalDate realStartTime) {
+	public void setRealStartTime(String realStartTime) {
 		this.realStartTime = realStartTime;
 	}
 
-	public LocalDate getExpectedEndTime() {
+	public String getExpectedEndTime() {
 		return expectedEndTime;
 	}
 
-	public void setExpectedEndTime(LocalDate expectedEndTime) {
+	public void setExpectedEndTime(String expectedEndTime) {
 		this.expectedEndTime = expectedEndTime;
 	}
 
-	public LocalDate getRealEndTime() {
+	public String getRealEndTime() {
 		return realEndTime;
 	}
 
-	public void setRealEndTime(LocalDate realEndTime) {
+	public void setRealEndTime(String realEndTime) {
 		this.realEndTime = realEndTime;
 	}
 
@@ -112,8 +83,5 @@ public class TaskDto implements Serializable{
 	public void setVersion(int version) {
 		this.version = version;
 	}
-
-	
-
 
 }

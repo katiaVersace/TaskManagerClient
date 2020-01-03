@@ -1,5 +1,6 @@
 package com.alten.springboot.taskmanager_client.controller;
 
+import java.util.List;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -31,7 +32,7 @@ public class DemoController {
 
 	@Autowired
 	private ILoginController loginClient;
-	
+
 	@Autowired
 	private ITeamController teamClient;
 
@@ -43,7 +44,7 @@ public class DemoController {
 	public String sayHello(Model theModel) {
 
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
 
 		theModel.addAttribute("theDate", new java.util.Date());
@@ -55,7 +56,7 @@ public class DemoController {
 	public String getEmployees(Model theModel) {
 
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
 
 		theModel.addAttribute("user", session.getUser());
@@ -67,34 +68,47 @@ public class DemoController {
 	public String getTasks(Model theModel) {
 
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
-
+		theModel.addAttribute("user", session.getUser());
 		theModel.addAttribute("tasks", taskClient.getTasks());
 		theModel.addAttribute("admin", session.isAdmin());
 
 		return "list-tasks";
 	}
+	
+	@GetMapping("/teams")
+	public String getTeams(Model theModel) {
+
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+
+		theModel.addAttribute("user", session.getUser());
+		theModel.addAttribute("teams", teamClient.getTeams());
+		theModel.addAttribute("admin", session.isAdmin());
+		return "list-teams";
+	}
 
 	@GetMapping("/tasks/{employeeId}")
 	public String getTasks(@PathVariable("employeeId") int employeeId, Model theModel) {
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
-
+		
 		theModel.addAttribute("user", session.getUser());
 		theModel.addAttribute("tasksOwner", employeeId);
 		theModel.addAttribute("tasks", taskClient.getTasksByEmployeeId(Integer.toString(employeeId)));
 		theModel.addAttribute("admin", session.isAdmin());
-		return "list-tasks";
+		return "list-tasks_by_employee";
 	}
-	
+
 	@GetMapping("/teams/{teamId}")
 	public String getEmployeesByTeam(@PathVariable("teamId") int teamId, Model theModel) {
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
-		
+
 		TeamDto theTeam = teamClient.getTeam(teamId);
 
 		theModel.addAttribute("user", session.getUser());
@@ -126,13 +140,11 @@ public class DemoController {
 			HTTPConduit teamConduit = WebClient.getConfig(teamClient).getHttpConduit();
 			teamConduit.getCookies().putAll(loginConduit.getCookies());
 
-			theModel.addAttribute("user", session.getUser());
-			theModel.addAttribute("teams", teamClient.getTeams());
-			theModel.addAttribute("admin", session.isAdmin());
-			return "list-teams";
+		
+			return "redirect:/teams";
 		} else {
-			theModel.addAttribute("error",true);
-			return "fancy-login";
+			theModel.addAttribute("error", true);
+			return showLoginForm(theModel);
 		}
 
 	}
@@ -140,23 +152,23 @@ public class DemoController {
 	@GetMapping("/logout")
 	public String logout(Model theModel) {
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
 
 		loginClient.logout();
 		session = null;
-		theModel.addAttribute("logout",true);
-		return "fancy-login";
+		theModel.addAttribute("logout", true);
+		return showLoginForm(theModel);
 	}
 
 	@GetMapping("/addTaskForm/{employeeId}")
 	public String addTaskForm(@PathVariable("employeeId") int employeeId, Model theModel) {
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
 		TaskDto theTask = new TaskDto();
 		theTask.setEmployeeId(employeeId);
-		
+
 		EmployeeDto theEmployee = employeeClient.getEmployee(employeeId);
 		theModel.addAttribute("taskOwnerUserName", theEmployee.getUserName());
 		theModel.addAttribute("task", theTask);
@@ -165,17 +177,19 @@ public class DemoController {
 
 		return "task-form";
 	}
-	
+
 	@GetMapping("/addTeamForm")
 	public String addTeamForm(Model theModel) {
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
 		TeamDto team = new TeamDto();
-		
+
 		theModel.addAttribute("team", team);
 		theModel.addAttribute("user", session.getUser());
 		theModel.addAttribute("admin", session.isAdmin());
+
+		theModel.addAttribute("employeesNotInTeam", employeeClient.getEmployees());
 
 		return "team-form";
 	}
@@ -183,27 +197,23 @@ public class DemoController {
 	@GetMapping("/deleteTask/{taskId}")
 	public String deleteTaskForm(@PathVariable("taskId") int taskId, Model theModel) {
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
 		taskClient.deleteTask(Integer.toString(taskId));
-
-		theModel.addAttribute("user", session.getUser());
-		theModel.addAttribute("employees", employeeClient.getEmployees());
-		return "list-employees";
+		return "redirect:/teams";
 
 	}
 
 	@GetMapping("/updateTaskForm/{taskId}")
 	public String updateTaskForm(@PathVariable("taskId") String taskId, Model theModel) {
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
-		
-		
+
 		TaskDto theTask = taskClient.getTask(taskId);
-		
+
 		EmployeeDto theEmployee = employeeClient.getEmployee(theTask.getEmployeeId());
-		
+
 		theModel.addAttribute("taskOwnerUserName", theEmployee.getUserName());
 
 		theModel.addAttribute("task", theTask);
@@ -213,14 +223,39 @@ public class DemoController {
 		return "task-form";
 	}
 
+	@GetMapping("/updateTeamForm/{teamId}")
+	public String updateTeamForm(@PathVariable("teamId") int teamId, Model theModel) {
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+
+		TeamDto theTeam = teamClient.getTeam(teamId);
+		List<EmployeeDto> notInTeam = employeeClient.getEmployees();
+
+		for (EmployeeDto employeeInTeam : theTeam.getEmployees()) {
+			for (EmployeeDto employee : notInTeam) {
+				if (employee.getId() == employeeInTeam.getId()) {
+					notInTeam.remove(employee);
+					break;
+				}
+			}
+		}
+
+		theModel.addAttribute("team", theTeam);
+		theModel.addAttribute("user", session.getUser());
+		theModel.addAttribute("admin", session.isAdmin());
+		theModel.addAttribute("employeesNotInTeam", notInTeam);
+		
+
+		return "team-form";
+	}
+
 	@PostMapping("/saveTask")
 	public String saveTask(@ModelAttribute("task") TaskDto theTaskDto, Model theModel) {
 
-		// EmployeeDtoLight e = employeeClient.getEmployee(theTaskDto.getEmployee().getId());
-		// theTaskDto.setEmployee(e);
-
+		
 		if (session == null) {
-			return "fancy-login";
+			return "redirect:/showLoginForm";
 		}
 
 		if (session.isAdmin()) {
@@ -233,13 +268,151 @@ public class DemoController {
 		else {
 			taskClient.updateTask(theTaskDto);
 		}
-		theModel.addAttribute("user", session.getUser());
-		theModel.addAttribute("tasksOwner", theTaskDto.getEmployeeId());
-		theModel.addAttribute("tasks",
-				taskClient.getTasksByEmployeeId(Integer.toString(theTaskDto.getEmployeeId())));
-		theModel.addAttribute("admin", session.isAdmin());
-		return "list-tasks";
+		
+		return getTasks(theTaskDto.getEmployeeId(), theModel);
+
+	}
+
+	@PostMapping("/saveTeam")
+	public String saveTeam(@ModelAttribute("team") TeamDto theTeamDto, Model theModel) {
+
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+
+		if (session.isAdmin()) {
+			if (theTeamDto.getId() == 0) {
+				teamClient.addTeam(theTeamDto);
+			} else {
+				theTeamDto.setEmployees(teamClient.getTeam(theTeamDto.getId()).getEmployees());
+				teamClient.updateTeam(theTeamDto);
+				
 
 			}
+		}
+		
+		return "redirect:/teams";
+
+	}
+
+	@PostMapping("/addEmployee/{teamId}/{employeeId}")
+	public String addEmployeeToTeam(@PathVariable("teamId") int teamId, @PathVariable("employeeId") int employeeId,
+			Model theModel) {
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+		if (session.isAdmin()) {
+
+			TeamDto team = teamClient.getTeam(teamId);
+
+			boolean alreadyInTeam = false;
+
+			for (EmployeeDto e : team.getEmployees()) {
+				if (e.getId() == employeeId)
+					alreadyInTeam = true;
+			}
+			if (!alreadyInTeam) {
+				EmployeeDto theEmployee = employeeClient.getEmployee(employeeId);
+				team.getEmployees().add(theEmployee);
+				teamClient.updateTeam(team);
+			}
+
+			return updateTeamForm(teamId, theModel);
+		}
+		
+		return "redirect:/teams";
+
+	}
+	
+	@GetMapping("/deleteTeam/{teamId}")
+	public String deleteTeamForm(@PathVariable("teamId") int teamId, Model theModel) {
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+		teamClient.deleteTeam(teamId);
+		return "redirect:/teams";
+
+	}
+	
+	@GetMapping("/removeEmployeeFromTeam/{teamId}/{employeeId}")
+	public String removeEmployeeFromTeam(@PathVariable("teamId") int teamId, @PathVariable("employeeId") int employeeId,
+			Model theModel) {
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+		if (session.isAdmin()) {
+
+			TeamDto team = teamClient.getTeam(teamId);
+
+			EmployeeDto employeeToRemove = null;
+			for (EmployeeDto e : team.getEmployees()) {
+				if (e.getId() == employeeId)
+					employeeToRemove = e;
+			}
+			if (employeeToRemove != null) {
+				
+				team.getEmployees().remove(employeeToRemove);
+				teamClient.updateTeam(team);
+			}
+
+			return "redirect:/updateTeamForm/"+teamId;
+		}
+		
+		return "redirect:/teams";
+
+	}
+	
+	@GetMapping("/addTaskToTeamForm")
+	public String addTaskToTeamForm(Model theModel) {
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+
+		TaskDto theTask = new TaskDto();
+
+		
+		theModel.addAttribute("task", theTask);
+		theModel.addAttribute("user", session.getUser());
+		theModel.addAttribute("admin", session.isAdmin());
+		theModel.addAttribute("teams", teamClient.getTeams());
+
+		return "task_to_team_form";
+	}
+	
+	@PostMapping("assignTaskToTeam")
+	public String assignTaskToTeam(@ModelAttribute("task") TaskDto theTaskDto,Model theModel) {
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+		
+		boolean result = false;
+		if(result) {
+			theTaskDto.setEmployeeId(3);
+			
+			//
+			EmployeeDto theEmployee = employeeClient.getEmployee(theTaskDto.getEmployeeId());
+
+			theModel.addAttribute("taskOwnerUserName", theEmployee.getUserName());
+
+			theModel.addAttribute("task", theTaskDto);
+			theModel.addAttribute("user", session.getUser());
+			theModel.addAttribute("admin", session.isAdmin());
+
+			return "task-form";
+		}
+		
+		else {
+			theModel.addAttribute("task", theTaskDto);
+			theModel.addAttribute("error", true);
+			theModel.addAttribute("user", session.getUser());
+			theModel.addAttribute("admin", session.isAdmin());
+			theModel.addAttribute("teams", teamClient.getTeams());
+
+			return "task_to_team_form";
+		}
+
+		
+	}
+	
 
 }

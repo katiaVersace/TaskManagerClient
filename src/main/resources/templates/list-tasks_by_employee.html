@@ -24,7 +24,7 @@
 		<hr>
 
 		<div th:if="${admin}">
-			<a th:href="@{'/addTaskToTeamForm/'}" class="btn btn-dark">Add Task To a Team</a>
+			<a th:href="@{'/addTaskForm/'+${tasksOwner}}" class="btn btn-dark">Add Task</a>
 		</div>
 
 		<table class="table table-bordered table-striped">
@@ -37,9 +37,9 @@
 					<th>Expected End Time</th>
 					<th>Real End Time</th>
 
-					
+					<div th:if="${admin} or ${user.id}==${tasksOwner}">
 						<th>Action</th>
-					
+					</div>
 
 				</tr>
 			</thead>
@@ -53,17 +53,16 @@
 					<td th:text="${tempTask.realStartTime}" />   
 					<td th:text="${tempTask.expectedEndTime}" />   
 					<td th:text="${tempTask.realEndTime}" />  
-<td>
-					<div th:if="${user.id}==${tempTask.employeeId} and not ${admin} ">
-						<a th:href="@{'/updateTaskForm/'+${tempTask.id}}">Update</a>
+
+					<div th:if="${user.id}==${tasksOwner} and not ${admin} ">
+						<td><a th:href="@{'/updateTaskForm/'+${tempTask.id}}">Update</a></td>
 					</div>
-					
 
 					<div th:if="${admin}">
-						<a th:href="@{'/updateTaskForm/'+${tempTask.id}}">Update</a>
-							| <a th:href="@{'/deleteTask/'+${tempTask.id}}" onclick="return confirm('Are you sure?')">Delete</a>
+						<td><a th:href="@{'/updateTaskForm/'+${tempTask.id}}">Update</a>
+							| <a th:href="@{'/deleteTask/'+${tempTask.id}}" onclick="return confirm('Are you sure?')">Delete</a></td>
 					</div>
-</td>
+
 				</tr>
 			</tbody>
 		</table>

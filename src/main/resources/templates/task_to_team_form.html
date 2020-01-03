@@ -14,45 +14,42 @@
 
 <body>
 
-	<div id="container" style="margin-top: 50px;"
+	<div id="container" style="margin-top: 40px;"
 		class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
-		<h3>Update Task</h3>
+		<h3>Assign Task</h3>
 
-		<form action=# th:action="@{/saveTask}" th:object="${task}"
+		<br> <br>
+
+		<div th:if="${error}">
+
+			<div class="alert alert-danger col-xs-offset-1 col-xs-10">
+				Maybe no one in that team is available</div>
+		</div>
+
+		<form action=# th:action="@{/assignTaskToTeam}" th:object="${task}"
 			method="POST">
 
 			<!-- need to associate this data with task id -->
 			<input type="hidden" th:field="*{id}" /> <input type="hidden"
-				th:field="*{version}" />
-
-			<input type="hidden" th:field="*{employeeId}" />
-			
-			
-			
+				th:field="*{version}" /> <input type="hidden"
+				th:field="*{employeeId}" />
 
 			<table>
 				<tbody>
 
-					<tr>
-						<td><label>Employee username:</label></td>
-						<td><input type="text" th:attr="value = ${taskOwnerUserName}"
-							th:readonly="readonly" class="form-control" th:required="required" /></td>
-					</tr>
-					
-					
 
 					<tr>
 						<td><label>Description:</label></td>
 						<td><input type="text" th:field="*{description}"
-							th:readonly="not ${admin}" class="form-control" th:required="required"/></td>
+							th:readonly="not ${admin}" class="form-control"
+							th:required="required" /></td>
 					</tr>
 
 					<tr>
 						<td><label>Expected Start Time:</label></td>
 						<td><input type="date" th:field="*{expectedStartTime} "
-							th:readonly="not ${admin} " class="form-control" th:required="required"
-						
-							 /></td>
+							th:readonly="not ${admin} " class="form-control"
+							th:required="required" /></td>
 					</tr>
 
 
@@ -66,7 +63,8 @@
 					<tr>
 						<td><label>Expected End Time:</label></td>
 						<td><input type="date" th:field="*{expectedEndTime} "
-							th:readonly="not ${admin} " class="form-control" th:required="required" /></td>
+							th:readonly="not ${admin} " class="form-control"
+							th:required="required" /></td>
 					</tr>
 
 
@@ -77,11 +75,23 @@
 					</tr>
 
 					<tr>
+						<td><label>Team:</label></td>
+						<td><select class="form-control" th:field=" ${teams}">
+								<option value="default">Choose a Team</option>
+								<option th:each="tempTeam :  ${teams}" th:value="${tempTeam.id}"
+									th:text="${tempTeam.name}"></option>
+
+						</select></td>
+					</tr>
+
+					<tr>
 						<td><label></label></td>
-						<td><input type="submit" value="Save" class="btn btn-dark" />
+						<td><input type="submit" value="Assign" class="btn btn-dark" />
 
 						</td>
 					</tr>
+
+
 
 
 				</tbody>
@@ -97,7 +107,6 @@
 			<a th:href="@{'/teams/'}">Back to Home Page</a>
 		</p>
 	</div>
-
 </body>
 
 </html>

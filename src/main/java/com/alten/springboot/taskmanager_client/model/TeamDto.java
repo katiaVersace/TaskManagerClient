@@ -1,8 +1,8 @@
 package com.alten.springboot.taskmanager_client.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class TeamDto implements Serializable{
@@ -11,7 +11,7 @@ public class TeamDto implements Serializable{
 	
 	private String name;
 	
-	private List<EmployeeDto> employees;
+	private Set<EmployeeDto> employees;
 	
 	private int version;
 
@@ -40,13 +40,13 @@ public class TeamDto implements Serializable{
 		this.name = name;
 	}
 
-	public List<EmployeeDto> getEmployees() {
+	public Set<EmployeeDto> getEmployees() {
 		if(employees==null)
-			employees = new ArrayList<EmployeeDto>();
+			employees = new HashSet<EmployeeDto>();
 		return employees;
 	}
 
-	public void setEmployees(List<EmployeeDto> employees) {
+	public void setEmployees(Set<EmployeeDto> employees) {
 		this.employees = employees;
 	}
 	

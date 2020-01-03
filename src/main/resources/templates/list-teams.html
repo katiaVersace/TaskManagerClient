@@ -36,9 +36,14 @@
 		<hr>
 
 		<div th:if="${admin}">
-			<a th:href="@{'/addTeamForm/'}">Add Team</a>
+			<a th:href="@{'/addTeamForm/'}" class="btn btn-dark">Add Team</a> <br>
+			<br>
 		</div>
 
+		<a th:href="@{'/employees/'}" class="btn btn-dark">Employees</a> <br>
+		<br> <a th:href="@{'/tasks/'}" class="btn btn-dark">Tasks</a>
+		<br>
+		<br>
 		<hr>
 
 		<table class="table table-bordered table-striped">
@@ -47,7 +52,7 @@
 					<th>Team Name</th>
 					<th>Number of Participants</th>
 					<div th:if="${admin}">
-					<th>Action</th>
+						<th>Action</th>
 					</div>
 
 				</tr>
@@ -58,11 +63,12 @@
 
 					<td><a th:href="@{'/teams/'+${tempTeam.id}}"><div
 								th:text="${tempTeam.name}" /> </a></td>
-					<td th:text="0" />
-					
+					<td th:text="${#lists.size(tempTeam.employees)}" />
+
 					<div th:if="${admin}">
 						<td><a th:href="@{'/updateTeamForm/'+${tempTeam.id}}">Update</a>
-							| <a th:href="@{'/deleteTeam/'+${tempTeam.id}}" onclick="return confirm('Are you sure?')">Delete</a></td>
+							| <a th:href="@{'/deleteTeam/'+${tempTeam.id}}"
+							onclick="return confirm('Are you sure?')">Delete</a></td>
 					</div>
 
 
@@ -70,7 +76,7 @@
 			</tbody>
 		</table>
 
-		<a th:href="@{'/logout/'}">logout</a>
+		<a th:href="@{'/logout/'}" class="btn btn-dark">logout</a>
 
 	</div>
 

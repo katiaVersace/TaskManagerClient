@@ -14,6 +14,19 @@
 
 <body>
 
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		function assignTask() {
+
+			var teamId = $("#teamSelect").val();
+
+			var action_src = "/assignTaskToTeam/" + teamId;
+
+			var task_form = document.getElementById('taskForm');
+			task_form.action = action_src;
+		}
+	</script>
 	<div id="container" style="margin-top: 40px;"
 		class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
 		<h3>Assign Task</h3>
@@ -26,7 +39,7 @@
 				Maybe no one in that team is available</div>
 		</div>
 
-		<form action=# th:action="@{/assignTaskToTeam}" th:object="${task}"
+		<form id="taskForm" onsubmit="assignTask()" th:object="${task}"
 			method="POST">
 
 			<!-- need to associate this data with task id -->
@@ -57,7 +70,7 @@
 					<tr>
 						<td><label>Real Start Time:</label></td>
 						<td><input type="date" th:field="*{realStartTime}"
-							class="form-control" th:required="required" /></td>
+							class="form-control" /></td>
 					</tr>
 
 					<tr>
@@ -71,13 +84,14 @@
 					<tr>
 						<td><label>Real End Time:</label></td>
 						<td><input type="date" th:field="*{realEndTime}"
-							class="form-control" th:required="required" /></td>
+							class="form-control" /></td>
 					</tr>
 
 					<tr>
 						<td><label>Team:</label></td>
-						<td><select class="form-control" th:field=" ${teams}">
-								<option value="default">Choose a Team</option>
+						<td><select id="teamSelect" class="form-control"
+							th:field=" ${teams}" th:required="true">
+								<option value="">Choose a Team</option>
 								<option th:each="tempTeam :  ${teams}" th:value="${tempTeam.id}"
 									th:text="${tempTeam.name}"></option>
 

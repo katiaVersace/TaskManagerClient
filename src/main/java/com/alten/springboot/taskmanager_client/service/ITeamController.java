@@ -14,8 +14,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.alten.springboot.taskmanager_client.model.AssignTaskToTeamInputDto;
 import com.alten.springboot.taskmanager_client.model.RandomPopulationInputDto;
+import com.alten.springboot.taskmanager_client.model.TaskDto;
 import com.alten.springboot.taskmanager_client.model.TeamDto;
 
 
@@ -65,11 +65,11 @@ public interface ITeamController {
 	
 
 	@POST
-	@Path("/assignTaskToTeam")
+	@Path("/assignTaskToTeam/{teamId}")
 	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean assignTaskToTeam(
-			 AssignTaskToTeamInputDto input);
+	public TaskDto assignTaskToTeam(
+			@PathParam("teamId") int teamId, TaskDto task );
 
 
 }

@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <!-- Bootstrap CSS -->
@@ -9,16 +9,73 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
 	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	crossorigin="anonymous">
-
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 
 <body>
 
+<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+	
+	
+		function checkOnDates() {
+			var today =  new Date();
+			today.setHours(0,0,0,0);
+			var expectedStartTime=document.getElementById("expectedStartTime").value;
+			var realStartTime=document.getElementById("realStartTime").value;
+			var expectedEndTime=document.getElementById("expectedEndTime").value;
+			var realEndTime=document.getElementById("realEndTime").value;
+
+			if((! (new Date(expectedStartTime).getTime() >= today && new Date(expectedStartTime).getTime() <=  new Date(expectedEndTime).getTime())) ||
+				
+			
+			(( realStartTime!="" || realEndTime !="") && !(new Date(realStartTime).getTime() >= today && new Date(realStartTime).getTime() <= new Date(realEndTime).getTime() ) ))
+			{
+				alert("Check the dates please")
+				$("#task_form").attr("method", "get")
+				return false;
+			}
+			else {
+				var action_src = "/saveTask" ;
+			    var your_form = document.getElementById('task_form');
+			    your_form.action = action_src ;
+			}
+				
+		}
+		$(document).ready(function() { 
+		var elems =document.getElementsByClassName("datePicker");
+		var today =  new Date()
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		 if(dd<10){
+		        dd='0'+dd
+		    } 
+		    if(mm<10){
+		        mm='0'+mm
+		    } 
+
+		today = yyyy+'-'+mm+'-'+dd;
+		let i = 0;
+		for(i = 0; i < elems.length ; i++) 
+			elems[i].setAttribute("min", today);
+		
+		});
+
+		</script>
+
 	<div id="container" style="margin-top: 50px;"
 		class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
 		<h3>Update Task</h3>
+		
+		<div th:if="${error}">
 
-		<form action=# th:action="@{/saveTask}" th:object="${task}"
+			<div class="alert alert-danger col-xs-offset-1 col-xs-10">
+				Impossible to save, maybe the employee is not available for this task</div>
+		</div>
+
+		<form id="task_form"  onsubmit="checkOnDates()" th:object="${task}"
 			method="POST">
 
 			<!-- need to associate this data with task id -->
@@ -36,7 +93,7 @@
 					<tr>
 						<td><label>Employee username:</label></td>
 						<td><input type="text" th:attr="value = ${taskOwnerUserName}"
-							th:readonly="readonly" class="form-control" th:required="required" /></td>
+							th:readonly="readonly" class="form-control " th:required="required" /></td>
 					</tr>
 					
 					
@@ -44,13 +101,13 @@
 					<tr>
 						<td><label>Description:</label></td>
 						<td><input type="text" th:field="*{description}"
-							th:readonly="not ${admin}" class="form-control" th:required="required"/></td>
+							th:readonly="not ${admin}" class="form-control " th:required="required"/></td>
 					</tr>
 
 					<tr>
 						<td><label>Expected Start Time:</label></td>
-						<td><input type="date" th:field="*{expectedStartTime} "
-							th:readonly="not ${admin} " class="form-control" th:required="required"
+						<td><input type="date" id="expectedStartTime" th:field="*{expectedStartTime} "
+							th:readonly="not ${admin} " class="form-control datePicker" th:required="required" 
 						
 							 /></td>
 					</tr>
@@ -59,21 +116,21 @@
 
 					<tr>
 						<td><label>Real Start Time:</label></td>
-						<td><input type="date" th:field="*{realStartTime}"
-							class="form-control" th:required="required" /></td>
+						<td><input type="date" id="realStartTime" th:field="*{realStartTime}" 
+							class="form-control datePicker"  /></td>
 					</tr>
 
 					<tr>
 						<td><label>Expected End Time:</label></td>
-						<td><input type="date" th:field="*{expectedEndTime} "
-							th:readonly="not ${admin} " class="form-control" th:required="required" /></td>
+						<td><input type="date" id="expectedEndTime" th:field="*{expectedEndTime} "
+							th:readonly="not ${admin} " class="form-control datePicker" th:required="required" /></td>
 					</tr>
 
 
 					<tr>
 						<td><label>Real End Time:</label></td>
-						<td><input type="date" th:field="*{realEndTime}"
-							class="form-control" th:required="required" /></td>
+						<td><input type="date" id="realEndTime" th:field="*{realEndTime}"
+							class="form-control datePicker" /></td>
 					</tr>
 
 					<tr>

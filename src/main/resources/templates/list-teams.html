@@ -12,27 +12,19 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
 	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	crossorigin="anonymous">
-
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
 <title>Teams Directory</title>
 </head>
 
 <body>
 
 	<div class="container">
-		<h2>Home Page</h2>
+		<h2>Teams</h2>
 		<hr>
 		<!-- display user name and role -->
 		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
 
-		<br> Role(s):
-		<tr th:each="role : ${user.roles}">
-			<p th:text="${role.name}" />
-		</tr>
-		<br>
-
-		<div
-			th:text=" 'First name: ' + ${user.firstName} +', LastName: '+ ${user.lastName} +', Email: '+ ${user.email}" />
-
+		
 		<hr>
 
 		<div th:if="${admin}">
@@ -40,13 +32,7 @@
 			<br>
 		</div>
 
-		<a th:href="@{'/employees/'}" class="btn btn-dark">Employees</a> <br>
-		<br> <a th:href="@{'/tasks/'}" class="btn btn-dark">Tasks</a>
 		
-		<br> <a th:href="@{'randomPopulationForm'}" class="btn btn-dark">Random Populate</a>
-		<br>
-		<br>
-		<hr>
 
 		<table class="table table-bordered table-striped">
 			<thead class="thead-dark">

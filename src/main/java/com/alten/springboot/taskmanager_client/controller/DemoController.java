@@ -41,16 +41,17 @@ public class DemoController {
 
 	// create a mapping for "/hello"
 
-	@GetMapping("/hello")
+	@GetMapping("/home")
 	public String sayHello(Model theModel) {
 
 		if (session == null) {
 			return "redirect:/showLoginForm";
 		}
 
-		theModel.addAttribute("theDate", new java.util.Date());
+		theModel.addAttribute("user", session.getUser());
+		theModel.addAttribute("admin", session.isAdmin());
 
-		return "helloworld";
+		return "home";
 	}
 
 	@GetMapping("/employees")
@@ -62,6 +63,7 @@ public class DemoController {
 
 		theModel.addAttribute("user", session.getUser());
 		theModel.addAttribute("employees", employeeClient.getEmployees());
+		theModel.addAttribute("admin", session.isAdmin());
 		return "list-employees";
 	}
 
@@ -141,7 +143,7 @@ public class DemoController {
 			HTTPConduit teamConduit = WebClient.getConfig(teamClient).getHttpConduit();
 			teamConduit.getCookies().putAll(loginConduit.getCookies());
 
-			return "redirect:/teams";
+			return "redirect:/home";
 		} else {
 			theModel.addAttribute("error", true);
 			return showLoginForm(theModel);
@@ -200,7 +202,7 @@ public class DemoController {
 			return "redirect:/showLoginForm";
 		}
 		taskClient.deleteTask(Integer.toString(taskId));
-		return "redirect:/teams";
+		return "redirect:/home";
 
 	}
 
@@ -258,7 +260,10 @@ public class DemoController {
 
 		if (session.isAdmin()) {
 			if (theTaskDto.getId() == 0) {
-				taskClient.addTask(theTaskDto);
+				if(taskClient.addTask(theTaskDto) == null) {
+					theModel.addAttribute("error", true);
+					return addTaskForm(theTaskDto.getEmployeeId(), theModel);
+				}
 			} else
 				taskClient.updateTaskAdmin(theTaskDto);
 		}
@@ -426,7 +431,7 @@ public class DemoController {
 			return randomPopulationForm(theModel);
 		}
 		
-		return "redirect:/teams";
+		return "redirect:/home";
 	}
 	
 	

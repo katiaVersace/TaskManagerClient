@@ -2,8 +2,6 @@ package com.alten.springboot.taskmanager_client.controller;
 
 import java.util.List;
 
-import javax.ws.rs.PathParam;
-
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +38,6 @@ public class DemoController {
 	private ITeamController teamClient;
 
 	private static CurrentSessionInfo session;
-
 
 	@GetMapping("/home")
 	public String sayHello(Model theModel) {
@@ -169,6 +166,10 @@ public class DemoController {
 		if (session == null) {
 			return "redirect:/showLoginForm";
 		}
+
+		if (!session.isAdmin()) {
+			return "access-denied";
+		}
 		TaskDto theTask = new TaskDto();
 		theTask.setEmployeeId(employeeId);
 
@@ -186,6 +187,9 @@ public class DemoController {
 		if (session == null) {
 			return "redirect:/showLoginForm";
 		}
+		if (!session.isAdmin()) {
+			return "access-denied";
+		}
 		TeamDto team = new TeamDto();
 
 		theModel.addAttribute("team", team);
@@ -202,6 +206,9 @@ public class DemoController {
 		if (session == null) {
 			return "redirect:/showLoginForm";
 		}
+		if (!session.isAdmin()) {
+			return "access-denied";
+		}
 		taskClient.deleteTask(Integer.toString(taskId));
 		return "redirect:/home";
 
@@ -214,6 +221,10 @@ public class DemoController {
 		}
 
 		TaskDto theTask = taskClient.getTask(taskId);
+
+		if (!(session.isAdmin() || session.getUser().getId() == theTask.getEmployeeId())) {
+			return "access-denied";
+		}
 
 		EmployeeDto theEmployee = employeeClient.getEmployee(theTask.getEmployeeId());
 
@@ -232,6 +243,9 @@ public class DemoController {
 			return "redirect:/showLoginForm";
 		}
 
+		if (!session.isAdmin()) {
+			return "access-denied";
+		}
 		TeamDto theTeam = teamClient.getTeam(teamId);
 		List<EmployeeDto> notInTeam = employeeClient.getEmployees();
 
@@ -269,8 +283,10 @@ public class DemoController {
 				taskClient.updateTaskAdmin(theTaskDto);
 		}
 
-		else {
+		else if (session.getUser().getId() == theTaskDto.getEmployeeId()) {
 			taskClient.updateTask(theTaskDto);
+		} else {
+			return "access-denied";
 		}
 
 		return getTasks(theTaskDto.getEmployeeId(), theModel);
@@ -292,6 +308,8 @@ public class DemoController {
 				teamClient.updateTeam(theTeamDto);
 
 			}
+		} else {
+			return "access-denied";
 		}
 
 		return "redirect:/teams";
@@ -320,10 +338,10 @@ public class DemoController {
 				teamClient.updateTeam(team);
 			}
 
-			return updateTeamForm(teamId, theModel);
+			return "redirect:/updateTeamForm/" + teamId;
+		} else {
+			return "access-denied";
 		}
-
-		return "redirect:/teams";
 
 	}
 
@@ -331,6 +349,9 @@ public class DemoController {
 	public String deleteTeamForm(@PathVariable("teamId") int teamId, Model theModel) {
 		if (session == null) {
 			return "redirect:/showLoginForm";
+		}
+		if (!session.isAdmin()) {
+			return "access-denied";
 		}
 		teamClient.deleteTeam(teamId);
 		return "redirect:/teams";
@@ -359,9 +380,10 @@ public class DemoController {
 			}
 
 			return "redirect:/updateTeamForm/" + teamId;
+		} 
+		else {
+			return "access-denied";
 		}
-
-		return "redirect:/teams";
 
 	}
 
@@ -369,6 +391,9 @@ public class DemoController {
 	public String addTaskToTeamForm(Model theModel) {
 		if (session == null) {
 			return "redirect:/showLoginForm";
+		}
+		if (!session.isAdmin() ) {
+			return "access-denied";
 		}
 
 		TaskDto theTask = (TaskDto) theModel.getAttribute("task");
@@ -389,6 +414,9 @@ public class DemoController {
 			@PathVariable("teamId") int teamId) {
 		if (session == null) {
 			return "redirect:/showLoginForm";
+		}
+		if (!session.isAdmin() ) {
+			return "access-denied";
 		}
 
 		TaskDto assignedTask = teamClient.assignTaskToTeam(teamId, theTaskDto);
@@ -411,6 +439,9 @@ public class DemoController {
 		if (session == null) {
 			return "redirect:/showLoginForm";
 		}
+		if (!session.isAdmin() ) {
+			return "access-denied";
+		}
 
 		RandomPopulationInputDto input = new RandomPopulationInputDto();
 
@@ -423,6 +454,14 @@ public class DemoController {
 
 	@PostMapping("/randomPopulation")
 	public String randomPopulation(@ModelAttribute("input") RandomPopulationInputDto input, Model theModel) {
+		
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+		
+		if (!session.isAdmin() ) {
+			return "access-denied";
+		}
 
 		String result = teamClient.randomPopulation(input);
 
@@ -439,6 +478,10 @@ public class DemoController {
 		if (session == null) {
 			return "redirect:/showLoginForm";
 		}
+		
+		if (!session.isAdmin() ) {
+			return "access-denied";
+		}
 		EmployeeDto employee = new EmployeeDto();
 
 		theModel.addAttribute("employee", employee);
@@ -449,23 +492,29 @@ public class DemoController {
 	}
 
 	@PostMapping("/saveEmployee/{admin}")
-	public String saveEmployee( @ModelAttribute("employee") EmployeeDto employeeDto, Model theModel, @PathVariable("admin") int admin) {
+	public String saveEmployee(@ModelAttribute("employee") EmployeeDto employeeDto, Model theModel,
+			@PathVariable("admin") int admin) {
 
 		if (session == null) {
 			return "redirect:/showLoginForm";
 		}
-		
-		employeeClient.addEmployee(admin,employeeDto);
+		if (!session.isAdmin() ) {
+			return "access-denied";
+		}
+
+		employeeClient.addEmployee(admin, employeeDto);
 
 		return "redirect:/employees";
 
 	}
 
-	
-		@GetMapping("/deleteEmployee/{employeeId}")
+	@GetMapping("/deleteEmployee/{employeeId}")
 	public String deleteEmployee(@PathVariable("employeeId") int employeeId, Model theModel) {
 		if (session == null) {
 			return "redirect:/showLoginForm";
+		}
+		if (!session.isAdmin() ) {
+			return "access-denied";
 		}
 		employeeClient.deleteEmployee(String.valueOf(employeeId));
 		return "redirect:/employees";

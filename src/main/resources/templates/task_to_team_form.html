@@ -71,11 +71,13 @@
 			
 			});
 	</script>
-	<div id="container" style="margin-top: 40px;"
-		class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
+	<div  class=" container">
 		<h3>Assign Task</h3>
 
-		<br> <br>
+		<br>
+	<!-- display user name and role -->
+	<div th:text=" 'Hi, server is logged as: ' + ${user.userName}"/>
+	<hr>
 
 		<div th:if="${error}">
 
@@ -91,7 +93,7 @@
 				th:field="*{version}" /> <input type="hidden"
 				th:field="*{employeeId}" />
 
-			<table>
+			<table class="table table-bordered ">
 				<tbody>
 
 
@@ -162,7 +164,7 @@
 
 		<p>
 
-			<a th:href="@{'/teams/'}">Back to Home Page</a>
+			<a th:href="@{'/home/'}" >Back to Home Page</a>
 		</p>
 	</div>
 </body>

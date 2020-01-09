@@ -2,11 +2,10 @@ package com.alten.springboot.taskmanager_client.model;
 
 import java.io.Serializable;
 
-
-public class RoleDto implements Serializable{
+public class RoleDto implements Serializable {
 
 	private int id;
-	
+
 	private String name;
 
 	public int getId() {
@@ -25,8 +24,8 @@ public class RoleDto implements Serializable{
 		this.name = name;
 	}
 
-	/*@Override
-	public String toString() {
-		return "RoleDto [id=" + id + ", name=" + name + "]";
-	}*/
+	/*
+	 * @Override public String toString() { return "RoleDto [id=" + id + ", name=" +
+	 * name + "]"; }
+	 */
 }

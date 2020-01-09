@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+public class TeamDto implements Serializable {
 
-public class TeamDto implements Serializable{
-	
 	private int id;
-	
+
 	private String name;
-	
+
 	private Set<EmployeeDto> employees;
-	
+
 	private int version;
 
 	public TeamDto() {
@@ -41,7 +40,7 @@ public class TeamDto implements Serializable{
 	}
 
 	public Set<EmployeeDto> getEmployees() {
-		if(employees==null)
+		if (employees == null)
 			employees = new HashSet<EmployeeDto>();
 		return employees;
 	}
@@ -49,7 +48,7 @@ public class TeamDto implements Serializable{
 	public void setEmployees(Set<EmployeeDto> employees) {
 		this.employees = employees;
 	}
-	
+
 	public int getVersion() {
 		return version;
 	}
@@ -57,10 +56,5 @@ public class TeamDto implements Serializable{
 	public void setVersion(int version) {
 		this.version = version;
 	}
-
-
-	
-	
-	
 
 }

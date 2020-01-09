@@ -12,7 +12,7 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
 	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	crossorigin="anonymous">
-	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+<link rel="stylesheet" th:href="@{/css/style.css}" />
 <title>Teams Directory</title>
 </head>
 
@@ -20,19 +20,19 @@
 
 	<div class="container">
 		<h2>Teams</h2>
-		<hr>
+		<br>
 		<!-- display user name and role -->
 		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
 
-		
+
 		<hr>
 
 		<div th:if="${admin}">
-			<a th:href="@{'/addTeamForm/'}" class="btn btn-dark">Add Team</a> <br>
-			<br>
+			<a th:href="@{'/addTeamForm/'}" class="btn btn-dark right">Add
+				Team</a> <br> <br>
 		</div>
 
-		
+
 
 		<table class="table table-bordered table-striped">
 			<thead class="thead-dark">
@@ -63,8 +63,9 @@
 				</tr>
 			</tbody>
 		</table>
+		<a th:href="@{'/home/'}">Back to Home Page</a> <br>
 
-		<a th:href="@{'/logout/'}" class="btn btn-dark">logout</a>
+		<a th:href="@{'/logout/'}" class="btn btn-dark right">logout</a>
 
 	</div>
 

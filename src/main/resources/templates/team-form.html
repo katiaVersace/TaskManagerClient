@@ -47,27 +47,24 @@
 		
 		
 	</script>
-	<div id="container" style="margin-top: 50px;"
-		class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
+	<div class="container">
 		<h3>Update Team</h3>
-
+<br>
+	<!-- display user name and role -->
+	<div th:text=" 'Hi, server is logged as: ' + ${user.userName}"/>
+	<hr>
 		<form action=# th:action="@{/saveTeam}" th:object="${team}"
 			method="POST">
 
 			<!-- need to associate this data with task id -->
 			<input type="hidden" th:field="*{id}" /> 
 			<input type="hidden" th:field="*{version}" />
-			
-			<hr>
-
-
-
-
+		
 			<label>Team name:</label> <input type="text"
 				th:field="*{name}" class="form-control"
 				th:required="required" /> <br>
 				 <input type="submit" value="Save"
-				class="btn btn-dark" />
+				class="btn btn-dark right" />
 
 		</form>
 		
@@ -117,9 +114,9 @@
 		</select>
 
 
-
+<br>
 			
-    <input type="submit" value="Add" class="btn btn-dark"/>
+    <input type="submit" value="Add" class="btn btn-dark right"/>
 </form>
 
 
@@ -128,7 +125,7 @@
 
 		<p>
 
-		<a th:href="@{'/teams/'}">Back to Home Page</a>
+		<a th:href="@{'/home/'}" >Back to Home Page</a>
 		</p>
 	</div>
 

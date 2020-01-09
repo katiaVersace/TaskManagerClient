@@ -20,12 +20,17 @@
 
 	<div class="container">
 
-		<h3>Tasks</h3>
+		<h3><div th:text=" 'Task of ' + ${tasksOwner.userName}"  /></h3>
+		
+		<br>
+		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
 		<hr>
 
 		<div th:if="${admin}">
-			<a th:href="@{'/addTaskForm/'+${tasksOwner}}" class="btn btn-dark">Add Task</a>
+			<a th:href="@{'/addTaskForm/'+${tasksOwner.id}}" class="btn btn-dark right">Add task to this Employee</a>
 		</div>
+		<br>
+		<br>
 
 		<table class="table table-bordered table-striped">
 			<thead class="thead-dark">
@@ -67,10 +72,10 @@
 			</tbody>
 		</table>
 
-		<a th:href="@{'/teams/'}" class="btn btn-dark">Back to Home Page</a> 
+		<a th:href="@{'/home/'}" >Back to Home Page</a> 
 		<br>
 		<a
-			th:href="@{'/logout/'}" class="btn btn-dark">logout</a>
+			th:href="@{'/logout/'}" class="btn btn-dark right">logout</a>
 	</div>
 
 </body>

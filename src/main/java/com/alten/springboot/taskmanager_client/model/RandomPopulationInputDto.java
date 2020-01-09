@@ -2,9 +2,8 @@ package com.alten.springboot.taskmanager_client.model;
 
 import java.io.Serializable;
 
+public class RandomPopulationInputDto implements Serializable {
 
-public class RandomPopulationInputDto implements Serializable{
-	
 	private String start;
 
 	private String end;
@@ -64,6 +63,5 @@ public class RandomPopulationInputDto implements Serializable{
 	public void setTask_max_duration(int task_max_duration) {
 		this.task_max_duration = task_max_duration;
 	}
-	
 
 }

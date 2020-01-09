@@ -2,16 +2,14 @@ package com.alten.springboot.taskmanager_client.model;
 
 import java.io.Serializable;
 
+public class AvailabilityByEmployeeInputDto implements Serializable {
 
-public class AvailabilityByEmployeeInputDto implements Serializable{
-	
 	private String start;
 
 	private String end;
 
 	private int employee_id;
-	
-	
+
 	public String getStart() {
 		return start;
 	}
@@ -36,7 +34,4 @@ public class AvailabilityByEmployeeInputDto implements Serializable{
 		this.employee_id = employee_id;
 	}
 
-	
-
-	
 }

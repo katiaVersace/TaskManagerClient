@@ -22,7 +22,6 @@ import com.alten.springboot.taskmanager_client.model.TaskDto;
 public interface IEmployeeRestController {
 
 	@GET
-	// @Path("/employees")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<EmployeeDto> getEmployees();
 
@@ -32,13 +31,12 @@ public interface IEmployeeRestController {
 	public EmployeeDto getEmployee(@PathParam("employeeId") int employeeId);
 
 	@POST
-	// @Path("/employees")
+	@Path("/{admin}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public EmployeeDto addEmployee(@RequestBody EmployeeDto theEmployee);
+	public EmployeeDto addEmployee(@PathParam("admin") int admin, @RequestBody EmployeeDto theEmployee);
 
 	@PUT
-	// @Path("/employees")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public EmployeeDto updateEmployee(@RequestBody EmployeeDto theEmployee);

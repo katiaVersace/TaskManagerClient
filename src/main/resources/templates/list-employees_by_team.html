@@ -16,12 +16,12 @@
 
 <div class="container">
 <h2>Employees</h2>
-	<hr>
-	<!-- display user name and role -->
-	<div th:text=" 'Hi, server is logged as: ' + ${user.userName}"/>
 	<br>
+		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
+		<hr>
 	
 	<div th:text=" 'Employees of the team ' + ${team.name}"/>
+	<br>
 
 		
 	<table class="table table-bordered table-striped">
@@ -51,8 +51,10 @@
 			</tr>
 		</tbody>		
 	</table>
-	
-	<a th:href= "@{'/logout/'}" class="btn btn-dark">logout</a>
+	<a th:href="@{'/home/'}">Back to Home Page</a>
+
+		<br> <br>
+	<a th:href= "@{'/logout/'}" class="btn btn-dark right">logout</a>
 	
 </div>
 	

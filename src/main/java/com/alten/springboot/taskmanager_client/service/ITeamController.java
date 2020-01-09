@@ -18,58 +18,43 @@ import com.alten.springboot.taskmanager_client.model.RandomPopulationInputDto;
 import com.alten.springboot.taskmanager_client.model.TaskDto;
 import com.alten.springboot.taskmanager_client.model.TeamDto;
 
-
 @Path("/teams")
 public interface ITeamController {
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<TeamDto> getTeams();
-	
+
 	@GET
 	@Path("/{teamId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public TeamDto getTeam(
-			@PathParam("teamId") int teamId);
-
+	public TeamDto getTeam(@PathParam("teamId") int teamId);
 
 	@POST
-	//@Path("/teams")
-	@Consumes(MediaType.APPLICATION_JSON) 
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public TeamDto addTeam(
-			 @RequestBody TeamDto theTeam);
+	public TeamDto addTeam(@RequestBody TeamDto theTeam);
 
-	
 	@PUT
-	//@Path("/teams")
-	@Consumes(MediaType.APPLICATION_JSON) 
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public TeamDto updateTeam(
-			 @RequestBody TeamDto theTeam);
+	public TeamDto updateTeam(@RequestBody TeamDto theTeam);
 
-	
 	@DELETE
 	@Path("/{teamId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String deleteTeam(
-			 @PathParam("teamId") int teamId);
+	public String deleteTeam(@PathParam("teamId") int teamId);
 
-	
 	@POST
 	@Path("/randomPopulation")
-	@Consumes(MediaType.APPLICATION_JSON) 
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String randomPopulation(
-		 RandomPopulationInputDto input);
-	
+	public String randomPopulation(RandomPopulationInputDto input);
 
 	@POST
 	@Path("/assignTaskToTeam/{teamId}")
-	@Consumes(MediaType.APPLICATION_JSON) 
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public TaskDto assignTaskToTeam(
-			@PathParam("teamId") int teamId, TaskDto task );
-
+	public TaskDto assignTaskToTeam(@PathParam("teamId") int teamId, TaskDto task);
 
 }

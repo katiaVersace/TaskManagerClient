@@ -2,6 +2,8 @@ package com.alten.springboot.taskmanager_client.controller;
 
 import java.util.List;
 
+import javax.ws.rs.PathParam;
+
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,6 @@ public class DemoController {
 
 	private static CurrentSessionInfo session;
 
-	// create a mapping for "/hello"
 
 	@GetMapping("/home")
 	public String sayHello(Model theModel) {
@@ -100,7 +101,7 @@ public class DemoController {
 		}
 
 		theModel.addAttribute("user", session.getUser());
-		theModel.addAttribute("tasksOwner", employeeId);
+		theModel.addAttribute("tasksOwner", employeeClient.getEmployee(employeeId));
 		theModel.addAttribute("tasks", taskClient.getTasksByEmployeeId(Integer.toString(employeeId)));
 		theModel.addAttribute("admin", session.isAdmin());
 		return "list-tasks_by_employee";
@@ -260,7 +261,7 @@ public class DemoController {
 
 		if (session.isAdmin()) {
 			if (theTaskDto.getId() == 0) {
-				if(taskClient.addTask(theTaskDto) == null) {
+				if (taskClient.addTask(theTaskDto) == null) {
 					theModel.addAttribute("error", true);
 					return addTaskForm(theTaskDto.getEmployeeId(), theModel);
 				}
@@ -371,7 +372,7 @@ public class DemoController {
 		}
 
 		TaskDto theTask = (TaskDto) theModel.getAttribute("task");
-		if(theTask == null) {
+		if (theTask == null) {
 			theTask = new TaskDto();
 		}
 
@@ -392,19 +393,19 @@ public class DemoController {
 
 		TaskDto assignedTask = teamClient.assignTaskToTeam(teamId, theTaskDto);
 		if (assignedTask != null) {
-		
-			return "redirect:/updateTaskForm/"+assignedTask.getId();
+
+			return "redirect:/updateTaskForm/" + assignedTask.getId();
 		}
 
 		else {
 			theModel.addAttribute("task", theTaskDto);
 			theModel.addAttribute("error", true);
-			
+
 			return addTaskToTeamForm(theModel);
 		}
 
 	}
-	
+
 	@GetMapping("/randomPopulationForm")
 	public String randomPopulationForm(Model theModel) {
 		if (session == null) {
@@ -412,7 +413,7 @@ public class DemoController {
 		}
 
 		RandomPopulationInputDto input = new RandomPopulationInputDto();
-	
+
 		theModel.addAttribute("user", session.getUser());
 		theModel.addAttribute("admin", session.isAdmin());
 		theModel.addAttribute("input", input);
@@ -420,20 +421,55 @@ public class DemoController {
 		return "random_population_form";
 	}
 
-	
 	@PostMapping("/randomPopulation")
-	public String randomPopulation(@ModelAttribute("input") RandomPopulationInputDto input ,Model theModel) {
-		
+	public String randomPopulation(@ModelAttribute("input") RandomPopulationInputDto input, Model theModel) {
+
 		String result = teamClient.randomPopulation(input);
-		
-		if(result.equals("invalid input")) {
+
+		if (result.equals("invalid input")) {
 			theModel.addAttribute("error", true);
 			return randomPopulationForm(theModel);
 		}
-		
+
 		return "redirect:/home";
 	}
+
+	@GetMapping("/addEmployeeForm")
+	public String addEmployeeForm(Model theModel) {
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+		EmployeeDto employee = new EmployeeDto();
+
+		theModel.addAttribute("employee", employee);
+		theModel.addAttribute("user", session.getUser());
+		theModel.addAttribute("admin", session.isAdmin());
+
+		return "employee-form";
+	}
+
+	@PostMapping("/saveEmployee/{admin}")
+	public String saveEmployee( @ModelAttribute("employee") EmployeeDto employeeDto, Model theModel, @PathVariable("admin") int admin) {
+
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+		
+		employeeClient.addEmployee(admin,employeeDto);
+
+		return "redirect:/employees";
+
+	}
+
 	
-	
+		@GetMapping("/deleteEmployee/{employeeId}")
+	public String deleteEmployee(@PathVariable("employeeId") int employeeId, Model theModel) {
+		if (session == null) {
+			return "redirect:/showLoginForm";
+		}
+		employeeClient.deleteEmployee(String.valueOf(employeeId));
+		return "redirect:/employees";
+
+	}
 
 }

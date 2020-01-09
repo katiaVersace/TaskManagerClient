@@ -3,13 +3,9 @@ package com.alten.springboot.taskmanager_client.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+public class EmployeeDto implements Serializable {
 
-
-public class EmployeeDto implements Serializable{
-	
 	private int id;
 
 	private String userName;
@@ -21,11 +17,11 @@ public class EmployeeDto implements Serializable{
 	private String lastName;
 
 	private String email;
-	
+
 	private boolean topEmployee;
 
 	private Collection<RoleDto> roles;
-	
+
 	private int version;
 
 	public int getId() {
@@ -85,7 +81,7 @@ public class EmployeeDto implements Serializable{
 	}
 
 	public Collection<RoleDto> getRoles() {
-		if(roles == null)
+		if (roles == null)
 			roles = new ArrayList<RoleDto>();
 		return roles;
 	}
@@ -94,7 +90,6 @@ public class EmployeeDto implements Serializable{
 		this.roles = roles;
 	}
 
-
 	public int getVersion() {
 		return version;
 	}
@@ -102,7 +97,5 @@ public class EmployeeDto implements Serializable{
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	
-	
 
 }

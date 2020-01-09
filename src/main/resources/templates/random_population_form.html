@@ -2,6 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
 <!-- Bootstrap CSS -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
@@ -12,19 +16,22 @@
 
 <body>
 
-	<div id="container" style="margin-top: 50px;"
-		class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
+	<div class="container" >
 		<h3>Random Populate</h3>
+		<br>
+		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
+		<hr>
 		<div th:if="${error}">
 
 			<div class="alert alert-danger col-xs-offset-1 col-xs-10">
 				Input not valid</div>
 		</div>
 
+
 		<form action=# th:action="@{/randomPopulation}" th:object="${input}"
 			method="POST">
 
-			<table>
+			<table class="table table-bordered ">
 				<tbody>
 					<tr>
 						<td><label>Start:</label></td>
@@ -85,7 +92,7 @@
 
 		<p>
 
-			<a th:href="@{'/teams/'}">Back to Home Page</a>
+			<a th:href="@{'/home/'}"  >Back to Home Page</a>
 		</p>
 	</div>
 

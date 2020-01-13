@@ -18,6 +18,7 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script>
 		function assignTask() {
+			
 			if(checkOnDates() == false) return false;
 			var teamId = $("#teamSelect").val();
 
@@ -46,7 +47,7 @@
 			}
 			else {
 				var action_src = "/saveTask" ;
-			    var your_form = document.getElementById('task_form');
+			    var your_form = document.getElementById('taskForm');
 			    your_form.action = action_src ;
 			}
 				

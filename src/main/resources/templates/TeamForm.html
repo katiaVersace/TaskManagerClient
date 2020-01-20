@@ -1,0 +1,139 @@
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+	
+	
+		function yourFunction() {
+
+			if ($("#notInTeamSelect").val() == "default") {
+
+				alert("Please select an Employee to add")
+				$("#your_form").attr("method", "get")
+				return false;
+			} else {
+				var newEmployee = $("#notInTeamSelect option:selected").text();
+				var newEmployeeId = $("#notInTeamSelect option:selected").val();
+				var teamId = [[${team.id}]];
+
+				if(teamId != 0){
+				var action_src = "/addEmployee/" + teamId+"/"+newEmployeeId;
+		    var your_form = document.getElementById('your_form');
+		    your_form.action = action_src ;
+				}
+				else{
+					alert("Please before insert the Team name and Save")
+					$("#your_form").attr("method", "get")
+					return false;
+				}
+				
+				
+			}
+		}
+		
+		
+	</script>
+	<div class="container">
+		<h3>Update Team</h3>
+		<br>
+		<!-- display user name and role -->
+		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
+		<hr>
+		<form action=# th:action="@{/saveTeam}" th:object="${team}"
+			method="POST">
+
+			<!-- need to associate this data with task id -->
+			<input type="hidden" th:field="*{id}" /> <input type="hidden"
+				th:field="*{version}" /> <label>Team name:</label> <input
+				type="text" th:field="*{name}" class="form-control"
+				th:required="required" /> <br> <input type="submit"
+				value="Save" class="btn btn-dark right" />
+
+		</form>
+
+		<br>
+		<div th:if="${team.id}!=0 ">
+			<label>Employees:</label>
+
+
+
+			<table id="inTeam" class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>Employee Username</th>
+						<th>Employee id</th>
+						<div th:if="${admin} ">
+							<th>Action</th>
+						</div>
+
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr th:each="tempEmployee : ${team.employees}">
+
+						<td th:text="${tempEmployee.userName}" />
+						<td th:text="${tempEmployee.id}" />
+
+						<div th:if="${admin}">
+							<td><a
+								th:href="@{'/removeEmployeeFromTeam/'+${team.id}+'/'+${tempEmployee.id}}"
+								onclick="return confirm('Are you sure?')">Remove</a></td>
+						</div>
+
+					</tr>
+				</tbody>
+			</table>
+
+			<br>
+
+			<form id="your_form" onsubmit="yourFunction()" method="post">
+
+
+				<select id="notInTeamSelect" class="form-control"
+					th:field=" ${employeesNotInTeam}">
+					<option value="default">Add a new Employee</option>
+					<option th:each="tempEmployee :  ${employeesNotInTeam}"
+						th:value="${tempEmployee.id}" th:text="${tempEmployee.userName}"></option>
+
+				</select> <br> <input type="submit" value="Add"
+					class="btn btn-dark right" />
+			</form>
+
+
+		</div>
+		<br>
+
+		<p>
+
+			<a th:href="@{'/home/'}">Back to Home Page</a>
+		</p>
+	</div>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+

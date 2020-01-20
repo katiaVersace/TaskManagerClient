@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<title>Employees</title>
+</head>
+
+<body>
+
+	<div class="container">
+		<h2>Employees</h2>
+		<br>
+		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
+		<hr>
+
+		<div th:if="${admin}">
+			<a th:href="@{'/addEmployeeForm/'}" class="btn btn-dark right">Add
+				Employee</a>
+		</div>
+		<br> <br>
+
+		<table class="table table-bordered table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Email</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="tempEmployee : ${employees}">
+					<div th:if="${tempEmployee.topEmployee} ">
+						<td th:text="${tempEmployee.firstName}+' (TOP EMPLOYEE)'" />
+					</div>
+
+					<div th:unless="${tempEmployee.topEmployee} ">
+						<td th:text="${tempEmployee.firstName}" />
+					</div>
+
+					<td th:text="${tempEmployee.lastName}" />
+					<td th:text="${tempEmployee.email}" />
+					<td><a th:href="@{'/tasks/'+${tempEmployee.id}}">View
+							Tasks </a> | <a th:href="@{'/deleteEmployee/'+${tempEmployee.id}}"
+						onclick="return confirm('Are you sure?')">Delete</a></td>
+
+				</tr>
+			</tbody>
+		</table>
+
+		<a th:href="@{'/home/'}">Back to Home Page</a> <br> <br> <a
+			th:href="@{'/logout/'}" class="btn btn-dark right">logout</a>
+
+	</div>
+
+</body>
+</html>
+
+
+

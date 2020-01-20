@@ -9,10 +9,10 @@
 		<version>2.2.2.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.alten.springboot.taskmanager</groupId>
-	<artifactId>taskmanager_client</artifactId>
+	<groupId>com.alten.springboot.taskmanagerclient</groupId>
+	<artifactId>TaskManagerClient</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>taskmanager_client</name>
+	<name>TaskManagerClient</name>
 	<description>Task Manager Client</description>
 
 	<properties>
@@ -79,11 +79,6 @@
 			<artifactId>jackson-jaxrs</artifactId>
 			<version>1.9.12</version>
 		</dependency>
-
-		
-
-
-
 
 	</dependencies>
 

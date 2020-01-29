@@ -53,8 +53,10 @@
 					<td th:text="${tempEmployee.lastName}" />
 					<td th:text="${tempEmployee.email}" />
 					<td><a th:href="@{'/tasks/'+${tempEmployee.id}}">View
-							Tasks </a> | <a th:href="@{'/deleteEmployee/'+${tempEmployee.id}}"
-						onclick="return confirm('Are you sure?')">Delete</a></td>
+							Tasks </a><div th:if="${admin}">| <a th:href="@{'/deleteEmployee/'+${tempEmployee.id}}"
+						onclick="return confirm('Are you sure?')">Delete</a>
+						</div>
+					</td>
 
 				</tr>
 			</tbody>

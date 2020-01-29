@@ -44,7 +44,7 @@
 					<th>Expected End Time</th>
 					<th>Real End Time</th>
 
-					<div th:if="${admin} or ${user.id}==${tasksOwner}">
+					<div th:if="${admin} or ${user.id}==${tasksOwner.id}">
 						<th>Action</th>
 					</div>
 
@@ -61,7 +61,7 @@
 					<td th:text="${tempTask.expectedEndTime}" />
 					<td th:text="${tempTask.realEndTime}" />
 
-					<div th:if="${user.id}==${tasksOwner} and not ${admin} ">
+					<div th:if="${user.id}==${tasksOwner.id} and not ${admin} ">
 						<td><a th:href="@{'/updateTaskForm/'+${tempTask.id}}">Update</a></td>
 					</div>
 

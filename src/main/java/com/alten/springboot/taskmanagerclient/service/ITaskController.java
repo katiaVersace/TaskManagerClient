@@ -1,20 +1,29 @@
 package com.alten.springboot.taskmanagerclient.service;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.List;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.alten.springboot.taskmanagerclient.model.TaskDto;
+
+
+
+/*
+ * To enable PATCH for RestEasy we need to define a annotation annotated with @HttpMethod
+ */
+@Target({ ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@HttpMethod("PATCH")
+@interface PATCH {
+}
+
 
 @Path("/tasks")
 public interface ITaskController {

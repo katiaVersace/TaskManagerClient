@@ -326,13 +326,8 @@ public class TaskManagerClientController {
 
 			TeamDto team = teamClient.getTeam(teamId);
 
-			boolean alreadyInTeam = false;
-
-			for (EmployeeDto e : team.getEmployees()) {
-				if (e.getId() == employeeId)
-					alreadyInTeam = true;
-			}
-			if (!alreadyInTeam) {
+			EmployeeDto employeeInTeam = team.getEmployees().stream().filter( e-> e.getId() == employeeId).findFirst().orElse(null);
+			if (employeeInTeam == null) {
 				EmployeeDto theEmployee = employeeClient.getEmployee(employeeId);
 				team.getEmployees().add(theEmployee);
 				teamClient.updateTeam(team);
@@ -368,11 +363,8 @@ public class TaskManagerClientController {
 
 			TeamDto team = teamClient.getTeam(teamId);
 
-			EmployeeDto employeeToRemove = null;
-			for (EmployeeDto e : team.getEmployees()) {
-				if (e.getId() == employeeId)
-					employeeToRemove = e;
-			}
+			EmployeeDto employeeToRemove = team.getEmployees().stream().filter( e-> e.getId() == employeeId).findFirst().orElse(null);
+
 			if (employeeToRemove != null) {
 
 				team.getEmployees().remove(employeeToRemove);

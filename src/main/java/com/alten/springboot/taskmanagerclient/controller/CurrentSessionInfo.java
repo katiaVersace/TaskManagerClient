@@ -34,13 +34,7 @@ public class CurrentSessionInfo {
 	}
 
 	public boolean isAdmin() {
-		for (RoleDto role : user.getRoles()) {
-			if (role.getName().equals("ROLE_ADMIN")) {
-
-				return true;
-			}
-		}
-		return false;
+		return user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
 	}
 
 }

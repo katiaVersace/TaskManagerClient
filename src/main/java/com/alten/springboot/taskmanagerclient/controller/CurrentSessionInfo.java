@@ -1,31 +1,30 @@
 package com.alten.springboot.taskmanagerclient.controller;
 
-import org.apache.cxf.transport.http.HTTPConduit;
-
 import com.alten.springboot.taskmanagerclient.model.EmployeeDto;
-import com.alten.springboot.taskmanagerclient.model.RoleDto;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.springframework.http.HttpHeaders;
 
 public class CurrentSessionInfo {
 
-	private HTTPConduit sourceConduit;
-	private EmployeeDto user;
 
-	public CurrentSessionInfo(HTTPConduit sourceConduit, EmployeeDto user) {
+	private static HttpHeaders headers;
+	private static EmployeeDto user;
+
+	public CurrentSessionInfo(HttpHeaders headers, EmployeeDto user) {
 		super();
-		this.sourceConduit = sourceConduit;
+		this.headers = headers;
 		this.user = user;
 
 	}
-
-	public HTTPConduit getSourceConduit() {
-		return sourceConduit;
+	public static HttpHeaders getHeaders() {
+		return headers;
 	}
 
-	public void setSourceConduit(HTTPConduit sourceConduit) {
-		this.sourceConduit = sourceConduit;
+	public void setHeaders(HttpHeaders headers) {
+		this.headers = headers;
 	}
 
-	public EmployeeDto getUser() {
+	public static EmployeeDto getUser() {
 		return user;
 	}
 
@@ -33,7 +32,7 @@ public class CurrentSessionInfo {
 		this.user = user;
 	}
 
-	public boolean isAdmin() {
+	public static boolean isAdmin() {
 		return user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
 	}
 

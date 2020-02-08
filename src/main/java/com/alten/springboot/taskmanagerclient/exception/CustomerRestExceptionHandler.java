@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class CustomerRestExceptionHandler {
-	
 
-	
 	@ExceptionHandler
 	public ResponseEntity<CustomerErrorResponse> handleException(Exception exc){
 		

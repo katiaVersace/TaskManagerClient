@@ -9,9 +9,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.ConnectException;
 import java.util.List;
 
 @Service
@@ -23,6 +26,7 @@ public class TaskService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public List<TaskDto> getTasks() {
 
         HttpEntity<String> request = new HttpEntity<String>(CurrentSessionInfo.getHeaders());
@@ -38,6 +42,7 @@ public class TaskService {
         return null;
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public TaskDto getTask(int taskId) {
 
         HttpEntity<String> request = new HttpEntity<String>(CurrentSessionInfo.getHeaders());
@@ -53,6 +58,7 @@ public class TaskService {
         return null;
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public TaskDto addTask(TaskDto theTask) {
 
         try {
@@ -69,6 +75,7 @@ public class TaskService {
         }
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public TaskDto updateTaskAdmin(TaskDto theTask) {
 
         try {
@@ -85,6 +92,7 @@ public class TaskService {
         }
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public TaskDto updateTask(TaskDto theTask) {
 
         try {
@@ -101,6 +109,7 @@ public class TaskService {
         }
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public String deleteTask(String taskId) {
 
         CurrentSessionInfo.getHeaders().setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -109,6 +118,7 @@ public class TaskService {
         return response.getBody();
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public List<TaskDto> getTasksByEmployeeId(int employeeId) {
 
         HttpEntity<String> request = new HttpEntity<>(CurrentSessionInfo.getHeaders());

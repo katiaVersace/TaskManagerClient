@@ -1,17 +1,23 @@
-<html>
+<html xmlns:th="http://thymeleaf.org">
 
 <head>
-<title>Sorry, Something went wrong</title>
+	
+	<title>Sorry, Something went wrong</title>
 </head>
 
 <body>
 
-	<h2>Sorry, Something went wrong!</h2>
+<h2>Sorry, Something went wrong!</h2>
 
-	<hr>
-	<p>Exception : ${exception}</p>
+<hr>
 
-	<a href="${pageContext.request.contextPath}/">Back to Home Page</a>
+<div th:text=" 'Failed URL: ' + ${url}" />
+
+<div th:text=" 'Exception: ' + ${exception.message}" />
+
+<br>
+
+<a th:href="@{'/home/'}">Back to Home Page</a>
 
 </body>
 

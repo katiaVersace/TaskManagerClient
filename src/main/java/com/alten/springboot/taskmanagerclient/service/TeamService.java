@@ -6,9 +6,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.ConnectException;
 import java.util.List;
 
 @Service
@@ -20,6 +23,7 @@ public class TeamService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public List<TeamDto> getTeams() {
 
         HttpEntity<String> request = new HttpEntity<String>(CurrentSessionInfo.getHeaders());
@@ -34,6 +38,7 @@ public class TeamService {
         } return null;
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public TeamDto getTeam(int taskId) {
 
         HttpEntity<String> request = new HttpEntity<String>(CurrentSessionInfo.getHeaders());
@@ -48,6 +53,7 @@ public class TeamService {
         } return null;
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public TeamDto addTeam(TeamDto theTeam) {
 
         try {
@@ -64,6 +70,7 @@ public class TeamService {
         }
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public TeamDto updateTeam(TeamDto theTeam) {
 
         try {
@@ -80,6 +87,7 @@ public class TeamService {
         }
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public String deleteTeam(String teamId) {
 
         CurrentSessionInfo.getHeaders().setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -88,6 +96,7 @@ public class TeamService {
         return response.getBody();
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public String randomPopulation(RandomPopulationInputDto input) {
 
         try {
@@ -102,6 +111,7 @@ public class TeamService {
         }
     }
 
+    @Retryable(value = { ConnectException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public TaskDto assignTaskToTeam(int teamId, TaskDto task) {
 
         try {

@@ -6,11 +6,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.ConnectException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,9 +26,10 @@ public class LoginService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Retryable(value = {ConnectException.class}, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public EmployeeDto login(String username, String password, HttpHeaders headers) {
 
-                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
         map.add("username", username);
         map.add("password", password);
@@ -49,6 +53,7 @@ public class LoginService {
             return null;
     }
 
+    @Retryable(value = {ConnectException.class}, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     public String logout() {
 
         HttpEntity<String> request = new HttpEntity<String>(CurrentSessionInfo.getHeaders());

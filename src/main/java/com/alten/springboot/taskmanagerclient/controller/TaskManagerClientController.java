@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -186,7 +187,7 @@ public class TaskManagerClientController {
     }
 
     @GetMapping("/deleteTask/{taskId}")
-    public String deleteTaskForm(@PathVariable("taskId") int taskId, Model theModel) {
+    public String deleteTaskForm(@PathVariable("taskId") int taskId, Model theModel , HttpServletRequest request) {
         if (session == null) {
             return "redirect:/showLoginForm";
         }
@@ -194,6 +195,7 @@ public class TaskManagerClientController {
             return "AccessDenied";
         }
         taskService.deleteTask(Integer.toString(taskId));
+
         return "redirect:/home";
 
     }

@@ -25,7 +25,7 @@ public class LoginService {
 
     public EmployeeDto login(String username, String password, HttpHeaders headers) {
 
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
         map.add("username", username);
         map.add("password", password);
@@ -35,8 +35,10 @@ public class LoginService {
         if (statusCode == HttpStatus.OK && response.getBody() != null) {
 
             try {
+
                 EmployeeDto user = mapper.readValue(response.getBody(), EmployeeDto.class);
                 List<String> cookies = response.getHeaders().get("Set-Cookie");
+
                 headers.set("Cookie", cookies.stream().collect(Collectors.joining(";")));
                 return user;
             } catch (JsonProcessingException e) {

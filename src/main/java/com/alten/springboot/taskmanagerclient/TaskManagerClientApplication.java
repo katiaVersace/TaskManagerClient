@@ -1,6 +1,8 @@
 package com.alten.springboot.taskmanagerclient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,8 +25,17 @@ public class TaskManagerClientApplication {
 
 	@Bean
 	public RestTemplate getRestTemplate() {
-		return new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpClient httpClient = HttpClientBuilder.create()
+				.disableCookieManagement()
+				.build();
+		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
+
+		return restTemplate;
 	}
+
+
 
 	@Bean
 	public ObjectMapper getObjectMapper() {

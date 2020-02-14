@@ -27,24 +27,30 @@ public class TaskService {
 
         HttpEntity<String> request = new HttpEntity<String>(CurrentSessionInfo.getHeaders());
         ResponseEntity<String> response = restTemplate.exchange(SERVER_URI, HttpMethod.GET, request, String.class);
-        try {
-            return mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, TaskDto.class));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
+        if(response.getBody()!= null) {
+            try {
+                return mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, TaskDto.class));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
+        return null;
     }
 
     public TaskDto getTask(int taskId) {
 
         HttpEntity<String> request = new HttpEntity<String>(CurrentSessionInfo.getHeaders());
         ResponseEntity<String> response = restTemplate.exchange(SERVER_URI + taskId + "/", HttpMethod.GET, request, String.class);
-        try {
-            return mapper.readValue(response.getBody(), TaskDto.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
+        if(response.getBody()!= null) {
+            try {
+                return mapper.readValue(response.getBody(), TaskDto.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
+        return null;
     }
 
     public TaskDto addTask(TaskDto theTask) {
@@ -54,7 +60,9 @@ public class TaskService {
             CurrentSessionInfo.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request_post = new HttpEntity<>(jsonTask, CurrentSessionInfo.getHeaders());
             String result = restTemplate.postForObject(SERVER_URI, request_post, String.class);
+            if(result!= null)
             return mapper.readValue(result, TaskDto.class);
+            return null;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -68,7 +76,9 @@ public class TaskService {
             CurrentSessionInfo.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request_update = new HttpEntity<>(jsonTask, CurrentSessionInfo.getHeaders());
             HttpEntity<String> response = restTemplate.exchange(SERVER_URI, HttpMethod.PUT, request_update, String.class);
+            if(response.getBody()!= null)
             return mapper.readValue(response.getBody(), TaskDto.class);
+            return null;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -82,7 +92,9 @@ public class TaskService {
             CurrentSessionInfo.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request_update = new HttpEntity<>(jsonTask, CurrentSessionInfo.getHeaders());
             HttpEntity<String> response = restTemplate.exchange(SERVER_URI, HttpMethod.PATCH, request_update, String.class);
+            if(response.getBody()!= null)
             return mapper.readValue(response.getBody(), TaskDto.class);
+            return null;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -101,12 +113,15 @@ public class TaskService {
 
         HttpEntity<String> request = new HttpEntity<>(CurrentSessionInfo.getHeaders());
         HttpEntity<String> response = restTemplate.exchange(SERVER_URI + "tasksByEmployee/" + employeeId + "/", HttpMethod.GET, request, String.class);
-        try {
-            return mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, TaskDto.class));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
+        if(response.getBody()!= null) {
+            try {
+                return mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, TaskDto.class));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
+        return null;
     }
 
 }

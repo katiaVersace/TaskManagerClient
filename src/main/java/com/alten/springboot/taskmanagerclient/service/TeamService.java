@@ -24,24 +24,28 @@ public class TeamService {
 
         HttpEntity<String> request = new HttpEntity<String>(CurrentSessionInfo.getHeaders());
         ResponseEntity<String> response = restTemplate.exchange(SERVER_URI, HttpMethod.GET, request, String.class);
-        try {
-            return mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, TeamDto.class));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
+        if(response.getBody()!= null) {
+            try {
+                return mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, TeamDto.class));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } return null;
     }
 
     public TeamDto getTeam(int taskId) {
 
         HttpEntity<String> request = new HttpEntity<String>(CurrentSessionInfo.getHeaders());
         ResponseEntity<String> response = restTemplate.exchange(SERVER_URI + taskId + "/", HttpMethod.GET, request, String.class);
-        try {
-            return mapper.readValue(response.getBody(), TeamDto.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
+        if(response.getBody()!= null) {
+            try {
+                return mapper.readValue(response.getBody(), TeamDto.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } return null;
     }
 
     public TeamDto addTeam(TeamDto theTeam) {
@@ -51,7 +55,9 @@ public class TeamService {
             CurrentSessionInfo.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request_post = new HttpEntity<>(jsonTeam, CurrentSessionInfo.getHeaders());
             String result = restTemplate.postForObject(SERVER_URI, request_post, String.class);
+            if(result!= null)
             return mapper.readValue(result, TeamDto.class);
+            return null;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -65,7 +71,9 @@ public class TeamService {
             CurrentSessionInfo.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request_update = new HttpEntity<>(jsonEmp, CurrentSessionInfo.getHeaders());
             HttpEntity<String> response = restTemplate.exchange(SERVER_URI, HttpMethod.PUT, request_update, String.class);
+            if(response.getBody()!= null)
             return mapper.readValue(response.getBody(), TeamDto.class);
+            return null;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -101,7 +109,9 @@ public class TeamService {
             CurrentSessionInfo.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request = new HttpEntity<>(jsonTask, CurrentSessionInfo.getHeaders());
             HttpEntity<String> response = restTemplate.exchange(SERVER_URI + "assignTaskToTeam/"+teamId+"/", HttpMethod.POST, request, String.class);
+           if(response.getBody()!=null)
             return mapper.readValue(response.getBody(), TaskDto.class);
+           else return null;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;

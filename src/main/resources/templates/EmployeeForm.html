@@ -1,21 +1,19 @@
-
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-	crossorigin="anonymous">
-<link rel="stylesheet" th:href="@{/css/style.css}" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 
 <body>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
 		function save() {
 
 			if (document.getElementById("admin").checked) {
@@ -29,79 +27,83 @@
 			}
 
 		}
-	</script>
+
+</script>
+<div class="header">
+    <img src="../images/taskmanager.png" alt="Task Manager logo">
+</div>
+
+<div class="container">
+    <h3>Save Employee</h3>
+    <br>
+    <!-- display user name and role -->
+    <div th:text=" 'Hi, server is logged as: ' + ${user.userName}"/>
+    <hr>
+    <div th:if="${error}">
+
+        <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+            Impossible to save
+        </div>
+    </div>
+
+    <form id="employeeForm" onsubmit="save()" th:object="${employee}"
+          method="POST">
+
+        <!-- need to associate this data with task id -->
+        <input type="hidden" th:field="*{id}"/> <input type="hidden"
+                                                       th:field="*{version}"/>
 
 
-	<div class="container">
-		<h3>Save Employee</h3>
-		<br>
-		<!-- display user name and role -->
-		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
-		<hr>
-		<div th:if="${error}">
+        <table class="table">
+            <tbody>
 
-			<div class="alert alert-danger col-xs-offset-1 col-xs-10">
-				Impossible to save</div>
-		</div>
+            <tr>
+                <td><label>Username:</label></td>
+                <td><input type="text" th:field=" *{userName}"
+                           class="form-control " th:required="required"/></td>
+            </tr>
 
-		<form id="employeeForm" onsubmit="save()" th:object="${employee}"
-			method="POST">
+            <tr>
+                <td><label>Password:</label></td>
+                <td><input type="text" th:field="*{password}"
+                           class="form-control " th:required="required"/></td>
+            </tr>
 
-			<!-- need to associate this data with task id -->
-			<input type="hidden" th:field="*{id}" /> <input type="hidden"
-				th:field="*{version}" />
+            <tr>
+                <td><label>First Name:</label></td>
+                <td><input type="text" th:field="*{firstName}"
+                           class="form-control " th:required="required"/></td>
+            </tr>
 
+            <tr>
+                <td><label>Last Name:</label></td>
+                <td><input type="text" th:field=" *{lastName}"
+                           class="form-control " th:required="required"/></td>
+            </tr>
 
-			<table class="table table-bordered ">
-				<tbody>
+            <tr>
+                <td><label>Email:</label></td>
+                <td><input type="text" th:field=" *{email}"
+                           class="form-control " th:required="required"/></td>
+            </tr>
+            <tr>
+                <td><label>Admin:</label></td>
+                <td><input type="checkbox" id="admin" value="Admin"></td>
+            </tr>
 
-					<tr>
-						<td><label>Username:</label></td>
-						<td><input type="text" th:field=" *{userName}"
-							class="form-control " th:required="required" /></td>
-					</tr>
+            <tr>
+                <td><label></label></td>
+                <td><input type="submit" value="Save" class="btn btn-dark"/>
 
-					<tr>
-						<td><label>Password:</label></td>
-						<td><input type="text" th:field="*{password}"
-							class="form-control " th:required="required" /></td>
-					</tr>
-
-					<tr>
-						<td><label>First Name:</label></td>
-						<td><input type="text" th:field="*{firstName}"
-							class="form-control " th:required="required" /></td>
-					</tr>
-
-					<tr>
-						<td><label>Last Name:</label></td>
-						<td><input type="text" th:field=" *{lastName}"
-							class="form-control " th:required="required" /></td>
-					</tr>
-
-					<tr>
-						<td><label>Email:</label></td>
-						<td><input type="text" th:field=" *{email}"
-							class="form-control " th:required="required" /></td>
-					</tr>
-					<tr>
-						<td><label>Admin:</label></td>
-						<td><input type="checkbox" id="admin" value="Admin"></td>
-					</tr>
-
-					<tr>
-						<td><label></label></td>
-						<td><input type="submit" value="Save" class="btn btn-dark" />
-
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</form>
-		<p>
-			<a th:href="@{'/home/'}">Back to Home Page</a>
-		</p>
-	</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <p>
+        <a th:href="@{'/home/'}">Back to Home Page</a>
+    </p>
+</div>
 
 </body>
 

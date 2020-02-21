@@ -2,98 +2,102 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-	crossorigin="anonymous">
-<link rel="stylesheet" th:href="@{/css/style.css}" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 
 <body>
 
-	<div class="container">
-		<h3>Random Populate</h3>
-		<br>
-		<div th:text=" 'Hi, server is logged as: ' + ${user.userName}" />
-		<hr>
-		<div th:if="${error}">
+<div class="header">
+    <img src="../images/taskmanager.png" alt="Task Manager logo">
+</div>
+<div class="container">
+    <h3>Random Populate</h3>
+    <br>
+    <div th:text=" 'Hi, server is logged as: ' + ${user.userName}"/>
+    <hr>
+    <div th:if="${error}">
 
-			<div class="alert alert-danger col-xs-offset-1 col-xs-10">
-				Input not valid</div>
-		</div>
-
-
-		<form action=# th:action="@{/randomPopulation}" th:object="${input}"
-			method="POST">
-
-			<table class="table table-bordered ">
-				<tbody>
-					<tr>
-						<td><label>Start:</label></td>
-						<td><input type="date" th:field="*{start} "
-							th:readonly="not ${admin} " class="form-control"
-							th:required="required" /></td>
-					</tr>
-
-					<tr>
-						<td><label>End:</label></td>
-						<td><input type="date" th:field="*{end} "
-							th:readonly="not ${admin} " class="form-control"
-							th:required="required" /></td>
-					</tr>
-
-					<tr>
-						<td><label>Number of Teams:</label></td>
-						<td><input type="text" th:field="*{teams_size}"
-							th:readonly="not ${admin}" class="form-control"
-							th:required="required" /></td>
-					</tr>
-
-					<tr>
-						<td><label>Number of Employees:</label></td>
-						<td><input type="text" th:field="*{employees_size}"
-							th:readonly="not ${admin}" class="form-control"
-							th:required="required" /></td>
-					</tr>
-
-					<tr>
-						<td><label>Number of Tasks:</label></td>
-						<td><input type="text" th:field="*{tasks_size}"
-							th:readonly="not ${admin}" class="form-control"
-							th:required="required" /></td>
-					</tr>
-
-					<tr>
-						<td><label>Max duration of one task:</label></td>
-						<td><input type="text" th:field="*{task_max_duration}"
-							th:readonly="not ${admin}" class="form-control"
-							th:required="required" /></td>
-					</tr>
+        <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+            Input not valid
+        </div>
+    </div>
 
 
-					<tr>
-						<td><label></label></td>
-						<td><input type="submit" value="Start" class="btn btn-dark" />
+    <form action=# th:action="@{/randomPopulation}" th:object="${input}"
+          method="POST">
 
-						</td>
-					</tr>
+        <table class="table">
+            <tbody>
+            <tr>
+                <td><label>Start:</label></td>
+                <td><input type="date" th:field="*{start} "
+                           th:readonly="not ${admin} " class="form-control"
+                           th:required="required"/></td>
+            </tr>
+
+            <tr>
+                <td><label>End:</label></td>
+                <td><input type="date" th:field="*{end} "
+                           th:readonly="not ${admin} " class="form-control"
+                           th:required="required"/></td>
+            </tr>
+
+            <tr>
+                <td><label>Number of Teams:</label></td>
+                <td><input type="text" th:field="*{teams_size}"
+                           th:readonly="not ${admin}" class="form-control"
+                           th:required="required"/></td>
+            </tr>
+
+            <tr>
+                <td><label>Number of Employees:</label></td>
+                <td><input type="text" th:field="*{employees_size}"
+                           th:readonly="not ${admin}" class="form-control"
+                           th:required="required"/></td>
+            </tr>
+
+            <tr>
+                <td><label>Number of Tasks:</label></td>
+                <td><input type="text" th:field="*{tasks_size}"
+                           th:readonly="not ${admin}" class="form-control"
+                           th:required="required"/></td>
+            </tr>
+
+            <tr>
+                <td><label>Max duration of one task:</label></td>
+                <td><input type="text" th:field="*{task_max_duration}"
+                           th:readonly="not ${admin}" class="form-control"
+                           th:required="required"/></td>
+            </tr>
 
 
-				</tbody>
-			</table>
+            <tr>
+                <td><label></label></td>
+                <td><input type="submit" value="Start" class="btn btn-dark"/>
 
-		</form>
+                </td>
+            </tr>
 
-		<p>
-			<a th:href="@{'/home/'}">Back to Home Page</a>
-		</p>
-	</div>
+
+            </tbody>
+        </table>
+
+    </form>
+
+    <p>
+        <a th:href="@{'/home/'}">Back to Home Page</a>
+    </p>
+</div>
 
 </body>
 

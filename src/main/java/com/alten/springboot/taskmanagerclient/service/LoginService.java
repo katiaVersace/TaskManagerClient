@@ -41,7 +41,7 @@ public class LoginService {
 
                 EmployeeDto user = mapper.readValue(response.getBody(), EmployeeDto.class);
                 List<String> cookies = response.getHeaders().get("Set-Cookie");
-
+                System.out.println(cookies.stream().collect(Collectors.joining(";")));
                 headers.set("Cookie", cookies.stream().collect(Collectors.joining(";")));
                 return user;
             } catch (JsonProcessingException e) {

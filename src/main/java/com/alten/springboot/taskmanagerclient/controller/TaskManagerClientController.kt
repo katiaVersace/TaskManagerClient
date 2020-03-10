@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
 @Controller
-class TaskManagerClientController (@Autowired private val employeeService: EmployeeService,
-                                   @Autowired private val taskService: TaskService,
-                                   @Autowired  private val loginService: LoginService,
-                                   @Autowired private val teamService: TeamService){
+class TaskManagerClientController(@Autowired private val employeeService: EmployeeService,
+                                  @Autowired private val taskService: TaskService,
+                                  @Autowired private val loginService: LoginService,
+                                  @Autowired private val teamService: TeamService) {
 
     @GetMapping("/home")
     fun sayHello(theModel: Model): String {
@@ -334,8 +334,8 @@ class TaskManagerClientController (@Autowired private val employeeService: Emplo
             if (theTaskDto != null) {
                 theModel["task"] = theTaskDto
             }
-           theModel["error"] = true
-           addTaskToTeamForm(theModel)
+            theModel["error"] = true
+            addTaskToTeamForm(theModel)
         }
     }
 

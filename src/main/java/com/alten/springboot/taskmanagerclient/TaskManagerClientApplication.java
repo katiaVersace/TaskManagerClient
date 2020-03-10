@@ -15,33 +15,32 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class TaskManagerClientApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TaskManagerClientApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TaskManagerClientApplication.class, args);
+    }
 
-	@Bean
-	public org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider jsonProvider() {
-		JacksonJaxbJsonProvider jsonProvider = new JacksonJaxbJsonProvider();
-		return jsonProvider;
-	}
+    @Bean
+    public org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider jsonProvider() {
+        JacksonJaxbJsonProvider jsonProvider = new JacksonJaxbJsonProvider();
+        return jsonProvider;
+    }
 
-	@Bean
-	public RestTemplate getRestTemplate() {
+    @Bean
+    public RestTemplate getRestTemplate() {
 
-		RestTemplate restTemplate = new RestTemplate();
-		HttpClient httpClient = HttpClientBuilder.create()
-				.disableCookieManagement()
-				.build();
-		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
+        RestTemplate restTemplate = new RestTemplate();
+        HttpClient httpClient = HttpClientBuilder.create()
+                .disableCookieManagement()
+                .build();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
 
-		return restTemplate;
-	}
+        return restTemplate;
+    }
 
 
-
-	@Bean
-	public ObjectMapper getObjectMapper() {
-		return new ObjectMapper();
-	}
+    @Bean
+    public ObjectMapper getObjectMapper() {
+        return new ObjectMapper();
+    }
 
 }

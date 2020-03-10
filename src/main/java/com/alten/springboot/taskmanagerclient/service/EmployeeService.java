@@ -14,8 +14,7 @@ import java.util.List;
 public class EmployeeService {
 
     public static final String SERVER_URI = "http://localhost:8080/employees/";
-    @Autowired
-    ObjectMapper mapper;
+
     @Autowired
     private MyRestTemplate restTemplate;
 
@@ -52,7 +51,8 @@ public class EmployeeService {
 
     public List<EmployeeDto> getAvailableEmployeesByTeamAndTask(int teamId, TaskDto theTask) {
 
-        return restTemplate.getForList(SERVER_URI + "employeesByTeamAndTask/" + teamId + "/", EmployeeDto.class);
+        //return restTemplate.getForList(SERVER_URI + "employeesByTeamAndTask/" + teamId + "/", EmployeeDto.class);
+        return restTemplate.getListFromPostRequest(SERVER_URI + "employeesByTeamAndTask/" + teamId + "/", EmployeeDto.class);
 
 
     }
@@ -60,6 +60,6 @@ public class EmployeeService {
 
     public String getAvailabilityByEmployee(AvailabilityByEmployeeInputDto input) {
 
-        return restTemplate.getResultOfOperation(SERVER_URI + "availability/", input, HttpMethod.GET);
+        return restTemplate.getResultOfOperation(SERVER_URI + "availability/", input, HttpMethod.POST);
     }
 }

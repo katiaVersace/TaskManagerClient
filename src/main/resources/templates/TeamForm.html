@@ -14,36 +14,34 @@
 <script
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-	
-	
-		function yourFunction() {
 
-			if ($("#notInTeamSelect").val() == "default") {
 
-				alert("Please select an Employee to add")
-				$("#your_form").attr("method", "get")
-				return false;
-			} else {
-				var newEmployee = $("#notInTeamSelect option:selected").text();
-				var newEmployeeId = $("#notInTeamSelect option:selected").val();
-				var teamId = [[${team.id}]];
+    function yourFunction() {
 
-				if(teamId != 0){
-				var action_src = "/addEmployee/" + teamId+"/"+newEmployeeId;
-		    var your_form = document.getElementById('your_form');
-		    your_form.action = action_src ;
-				}
-				else{
-					alert("Please before insert the Team name and Save")
-					$("#your_form").attr("method", "get")
-					return false;
-				}
-				
-				
-			}
-		}
-		
-		
+        if ($("#notInTeamSelect").val() == "default") {
+
+            alert("Please select an Employee to add")
+            $("#your_form").attr("method", "get")
+            return false;
+        } else {
+            var newEmployee = $("#notInTeamSelect option:selected").text();
+            var newEmployeeId = $("#notInTeamSelect option:selected").val();
+            var teamId = [[${team.id}]];
+
+            if (teamId != 0) {
+                var action_src = "/addEmployee/" + teamId + "/" + newEmployeeId;
+                var your_form = document.getElementById('your_form');
+                your_form.action = action_src;
+            } else {
+                alert("Please before insert the Team name and Save")
+                $("#your_form").attr("method", "get")
+                return false;
+            }
+
+
+        }
+    }
+
 
 </script>
 <div class="header">

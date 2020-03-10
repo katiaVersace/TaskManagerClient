@@ -6,55 +6,55 @@ import java.util.Set;
 
 public class TeamDto implements Serializable {
 
-	private int id;
+    private int id;
 
-	private String name;
+    private String name;
 
-	private Set<EmployeeDto> employees;
+    private Set<EmployeeDto> employees;
 
-	private int version;
+    private int version;
 
-	public TeamDto() {
-		super();
-	}
+    public TeamDto() {
+        super();
+    }
 
-	public TeamDto(String name) {
-		super();
-		this.name = name;
-	}
+    public TeamDto(String name) {
+        super();
+        this.name = name;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Set<EmployeeDto> getEmployees() {
-		if (employees == null)
-			employees = new HashSet<EmployeeDto>();
-		return employees;
-	}
+    public Set<EmployeeDto> getEmployees() {
+        if (employees == null)
+            employees = new HashSet<EmployeeDto>();
+        return employees;
+    }
 
-	public void setEmployees(Set<EmployeeDto> employees) {
-		this.employees = employees;
-	}
+    public void setEmployees(Set<EmployeeDto> employees) {
+        this.employees = employees;
+    }
 
-	public int getVersion() {
-		return version;
-	}
+    public int getVersion() {
+        return version;
+    }
 
-	public void setVersion(int version) {
-		this.version = version;
-	}
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
 }
